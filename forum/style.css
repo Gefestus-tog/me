@@ -1,0 +1,209 @@
+       @font-face {
+    font-family: 'Chaos16';
+    src: url('../CHAOS16/CHAOS16.otf') format('truetype');
+}
+       
+       
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Chaos16';
+        }
+
+        body {
+            background-color: #000;
+            color: #0f0;
+            
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            border: 2px solid #0f0;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #0a0;
+        }
+
+        .new-post {
+            border: 2px solid #0f0;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .new-post h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            background-color: #001100;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 8px;
+            
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0ff;
+        }
+
+        button {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0ff;
+        }
+
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .post {
+            border: 2px solid #0f0;
+            padding: 15px;
+            position: relative;
+        }
+
+        .post-header {
+            font-size: 1em;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #0a0;
+        }
+
+        .post-author {
+            color: #0ff;
+            font-weight: bold;
+        }
+
+        .post-date {
+            color: #0a0;
+            font-size: 12px;
+        }
+
+        .post-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #0ff;
+        }
+
+        .post-content {
+            margin-bottom: 50px;
+        }
+
+        .post-footer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 12px;
+            color: #0a0;
+            align-items: center;
+        }
+
+        .post-attachment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #0a0;
+            padding: 5px;
+            margin-top: 5px;
+        }
+
+        .attachment-preview {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border: 1px solid #0f0;
+        }
+
+        .attachment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .attachment-name {
+            color: #0ff;
+            font-size: 11px;
+        }
+
+        .attachment-size {
+            color: #0a0;
+            font-size: 10px;
+        }
+
+        .file-input-wrapper {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            background-color: #001100;
+            border: 1px solid #0f0;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .file-label:hover {
+            border-color: #0ff;
+        }
+
+        .file-name {
+            color: #0a0;
+            font-size: 12px;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+        a{
+            text-decoration: none;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+    
