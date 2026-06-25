@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Эщливери — Canvas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B1E26; --ink-soft:#454B58; --muted:#8A909E;
+  --bg:#E9ECEA; --card:#FFFFFF; --line:#E3E6E2; --line-soft:#EDEFEC;
+  --coral:#FF5436; --coral-soft:#FFE7E0; --coral-ink:#B82C13;
+  --teal:#0E7C66; --teal-soft:#D7EFE8; --teal-ink:#0A5A4A;
+  --amber:#D88A0A; --amber-soft:#FBEED2;
+  --violet:#5B4FC9; --violet-soft:#E6E3FA;
+  --slate:#7C8290; --slate-soft:#E9EBEE;
+  --dot:rgba(27,30,38,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+
+/* ---- viewport / world ---- */
+#viewport{position:fixed;inset:0;overflow:hidden;cursor:grab;
+  background-color:var(--bg);
+  background-image:radial-gradient(circle at center, var(--dot) 1.4px, transparent 1.6px);
+  background-size:26px 26px;background-position:0 0;touch-action:none}
+#viewport.grabbing{cursor:grabbing}
+#world{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none}
+#edges{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;z-index:0}
+
+/* ---- node ---- */
+.node{position:absolute;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 1px 2px rgba(27,30,38,.05),0 10px 30px rgba(27,30,38,.08);
+  z-index:1;cursor:grab;overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.node:hover{box-shadow:0 2px 6px rgba(27,30,38,.08),0 20px 50px rgba(27,30,38,.14);border-color:#cfd3ce}
+.node.drag{cursor:grabbing;box-shadow:0 30px 70px rgba(27,30,38,.22);z-index:50}
+.nh{display:flex;align-items:center;gap:9px;padding:11px 16px;border-bottom:1px solid var(--line-soft)}
+.nh .tag{width:9px;height:9px;border-radius:50%;flex:none}
+.nh h3{font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;letter-spacing:-.015em;line-height:1.1}
+.nh .kicker{font-family:'JetBrains Mono';font-size:9.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-left:auto;flex:none}
+.nb{padding:14px 16px}
+.nb.tight{padding:12px 16px}
+
+/* shared bits */
+.block-h{font-family:'JetBrains Mono';font-size:9.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin:2px 0 7px;display:flex;align-items:center;gap:6px}
+.block-h .ic{width:5px;height:5px;border-radius:50%}
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:15px;font-size:12.5px;color:var(--ink-soft);margin-bottom:5px;line-height:1.4}
+ul.clean li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:2px;background:var(--bullet,var(--coral))}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.chip{font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:3px 9px;color:var(--ink-soft)}
+.chip b{color:var(--ink);font-weight:600}
+.avatar{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;color:#fff;letter-spacing:-.02em}
+.role-pill{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9.5px;
+  font-weight:600;padding:2px 8px;border-radius:30px;margin-top:4px;letter-spacing:.04em}
+.persona-head{display:flex;gap:12px;align-items:center;margin-bottom:11px}
+.persona-head h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.1}
+.quote{background:var(--ink);color:#fff;border-radius:11px;padding:11px 14px 11px 30px;font-size:12.5px;
+  font-style:italic;position:relative;margin-top:11px}
+.quote::before{content:"”";font-family:'Bricolage Grotesque';position:absolute;left:11px;top:0;font-size:30px;color:var(--coral);font-style:normal}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* user story chips */
+.us{display:flex;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+  font-size:12px;color:var(--ink-soft);line-height:1.35;margin-bottom:7px}
+.us:last-child{margin-bottom:0}
+.us-id{font-family:'JetBrains Mono';font-weight:700;font-size:10.5px;color:var(--coral);
+  background:var(--coral-soft);padding:1px 6px;border-radius:6px;height:fit-content;flex:none}
+.us em{font-style:normal;color:var(--ink);font-weight:600}
+
+/* criteria */
+.crit{display:flex;gap:10px;margin-bottom:11px}
+.crit:last-child{margin-bottom:0}
+.crit-n{width:22px;height:22px;border-radius:7px;flex:none;display:grid;place-items:center;
+  font-family:'JetBrains Mono';font-weight:700;font-size:11px;background:var(--teal-soft);color:var(--teal-ink)}
+.crit .t{font-size:12.5px;color:var(--ink);font-weight:500;line-height:1.35}
+.crit .c{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+
+/* gwt */
+.gwt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:9px}
+.gwt:last-child{margin-bottom:0}
+.gwt-row{display:grid;grid-template-columns:62px 1fr;border-bottom:1px solid var(--line-soft);font-size:11.5px}
+.gwt-row:last-child{border-bottom:none}
+.gwt-k{font-family:'JetBrains Mono';font-weight:700;font-size:10px;padding:7px 10px;letter-spacing:.03em}
+.g-given .gwt-k{background:var(--violet-soft);color:var(--violet)}
+.g-when .gwt-k{background:var(--amber-soft);color:var(--amber)}
+.g-then .gwt-k{background:var(--teal-soft);color:var(--teal-ink)}
+.gwt-v{padding:7px 10px;color:var(--ink-soft);line-height:1.35}
+.verdict{display:flex;align-items:center;gap:8px;margin-top:11px;padding:9px 12px;border-radius:9px;
+  background:var(--teal);color:#fff;font-size:12px;font-weight:500}
+
+/* sprint card */
+.sp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.sp-title{font-family:'Bricolage Grotesque';font-weight:700;font-size:13.5px;letter-spacing:-.01em;line-height:1.2}
+.sp-badge{text-align:center;flex:none}
+.sp-badge .n{font-family:'Bricolage Grotesque';font-weight:800;font-size:24px;color:var(--coral);line-height:1;letter-spacing:-.03em}
+.sp-badge .l{font-family:'JetBrains Mono';font-size:8px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.invest-tag{display:inline-flex;font-family:'JetBrains Mono';font-size:10px;font-weight:600;
+  padding:4px 9px;border-radius:7px;margin-top:9px;line-height:1.3}
+.iv-ok{background:var(--teal-soft);color:var(--teal-ink)}
+.iv-warn{background:var(--amber-soft);color:var(--amber)}
+
+/* invest letters */
+.iv-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.iv-cell{display:flex;gap:10px;align-items:flex-start}
+.iv-cell .L{font-family:'Bricolage Grotesque';font-weight:800;font-size:24px;color:var(--coral);line-height:.9;flex:none;width:20px}
+.iv-cell .w{font-family:'Bricolage Grotesque';font-weight:700;font-size:12.5px;letter-spacing:-.01em}
+.iv-cell .w span{display:block;font-family:'JetBrains Mono';font-size:8.5px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.iv-cell .d{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.35}
+
+/* team */
+.member{margin-bottom:11px}
+.member:last-child{margin-bottom:0}
+.member .mh{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.member .rn{width:22px;height:22px;border-radius:7px;background:var(--violet-soft);color:var(--violet);
+  font-family:'JetBrains Mono';font-weight:700;font-size:11px;display:grid;place-items:center;flex:none}
+.member h5{font-family:'Bricolage Grotesque';font-weight:700;font-size:13px;letter-spacing:-.01em}
+.member p{font-size:11.5px;color:var(--ink-soft);padding-left:31px;line-height:1.4}
+
+/* moscow */
+.mos{margin-bottom:13px}
+.mos:last-child{margin-bottom:0}
+.mos-h{display:flex;justify-content:space-between;align-items:center;color:#fff;padding:7px 11px;
+  border-radius:8px;font-family:'Bricolage Grotesque';font-weight:700;font-size:12.5px;margin-bottom:7px}
+.mos-h .ct{font-family:'JetBrains Mono';font-weight:600;font-size:10px;background:rgba(255,255,255,.22);padding:1px 7px;border-radius:20px}
+.mos-row{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--ink-soft);padding:3px 0}
+.mos-row .uid{font-family:'JetBrains Mono';font-weight:600;font-size:10.5px;color:var(--ink);flex:none}
+.mos-row .spx{font-family:'JetBrains Mono';font-size:10.5px;color:var(--muted);flex:none}
+.m-must .mos-h{background:var(--coral)} .m-should .mos-h{background:var(--teal)}
+.m-could .mos-h{background:var(--amber)} .m-wont .mos-h{background:var(--slate)}
+.mos-note{font-size:11px;color:var(--ink-soft);line-height:1.4;padding-top:4px}
+
+/* mvp / metrics */
+.mvp-row{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-soft);padding:5px 0;border-bottom:1px solid var(--line-soft)}
+.mvp-row:last-child{border-bottom:none}
+.mvp-row .ck{width:17px;height:17px;border-radius:5px;background:var(--teal);flex:none;display:grid;place-items:center}
+.mvp-row .uid{font-family:'JetBrains Mono';font-weight:600;font-size:10.5px;color:var(--teal-ink);flex:none}
+.calc{font-family:'JetBrains Mono';font-size:11.5px;color:var(--ink-soft);background:var(--bg);
+  border:1px solid var(--line);border-radius:9px;padding:11px 13px;line-height:1.85}
+.calc b{color:var(--coral);font-weight:600}
+.bigstat{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.bigstat .v{font-family:'Bricolage Grotesque';font-weight:800;font-size:34px;letter-spacing:-.03em;line-height:1;color:var(--coral)}
+.bigstat .v small{font-size:14px;color:var(--ink-soft);font-family:'JetBrains Mono';font-weight:600}
+.bigstat .l{font-size:11.5px;color:var(--muted)}
+.bar{height:9px;border-radius:5px;overflow:hidden;display:flex;margin-top:9px}
+.bar i{height:100%}
+.lead{font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+.lead b{color:var(--ink);font-weight:600}
+.note{background:var(--teal-soft);border:1px solid #BFE5DA;border-radius:10px;padding:11px 13px;font-size:11.5px;color:var(--teal-ink);line-height:1.45;margin-top:11px}
+.note b{font-weight:700}
+
+/* hero node */
+.hero-node{background:var(--ink);color:#fff;border:none}
+.hero-node .nb{padding:20px 20px 22px}
+.hero-node .eyebrow{font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#FFB3A4;font-weight:500}
+.hero-node h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:27px;letter-spacing:-.03em;line-height:1.03;margin:8px 0 9px}
+.hero-node h1 .a{color:var(--coral)}
+.hero-node p{font-size:12.5px;color:#C7CAD2;line-height:1.5}
+.hstats{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px}
+.hstats .v{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;letter-spacing:-.02em}
+.hstats .v span{font-size:11px;color:var(--coral);font-family:'JetBrains Mono'}
+.hstats .l{font-size:9px;color:#9CA1AC;font-family:'JetBrains Mono';letter-spacing:.04em;text-transform:uppercase}
+
+/* ---- toolbar ---- */
+.toolbar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;display:flex;
+  align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:6px;box-shadow:0 8px 30px rgba(27,30,38,.16)}
+.tbtn{border:none;background:transparent;width:34px;height:34px;border-radius:9px;cursor:pointer;
+  display:grid;place-items:center;color:var(--ink-soft);transition:background .15s,color .15s}
+.tbtn:hover{background:var(--bg);color:var(--ink)}
+.tbtn svg{width:18px;height:18px}
+.zoom-lvl{font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:var(--ink);min-width:50px;
+  text-align:center;cursor:pointer;padding:0 4px;user-select:none}
+.tsep{width:1px;height:22px;background:var(--line);margin:0 3px}
+.tlabel{font-family:'JetBrains Mono';font-size:11px;color:var(--muted);padding:0 8px;letter-spacing:.02em}
+
+/* ---- header badge ---- */
+.brand{position:fixed;top:18px;left:18px;z-index:100;display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:8px 14px 8px 8px;
+  box-shadow:0 6px 20px rgba(27,30,38,.10)}
+.brand .mk{width:34px;height:34px;border-radius:10px;background:var(--coral);display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(255,84,54,.34)}
+.brand .mk svg{width:19px;height:19px}
+.brand .nm{font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.05}
+.brand .nm small{display:block;font-family:'JetBrains Mono';font-weight:500;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+.hint{position:fixed;top:18px;right:18px;z-index:100;background:rgba(27,30,38,.86);color:#fff;
+  font-size:11.5px;border-radius:11px;padding:9px 13px;line-height:1.5;max-width:240px;backdrop-filter:blur(6px);
+  font-family:'JetBrains Mono';transition:opacity .4s}
+.hint b{color:#FFB3A4}
+.hint.hide{opacity:0;pointer-events:none}
+
+/* ---- minimap ---- */
+.minimap{position:fixed;bottom:18px;right:18px;z-index:100;width:210px;height:150px;background:rgba(255,255,255,.7);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(27,30,38,.14);backdrop-filter:blur(4px)}
+.minimap .mm-node{position:absolute;background:var(--coral);border-radius:2px;opacity:.5}
+.minimap .mm-view{position:absolute;border:1.6px solid var(--ink);border-radius:3px;background:rgba(27,30,38,.06)}
+
+@media (max-width:680px){
+  .hint{display:none}.minimap{width:140px;height:100px}
+  .brand .nm small{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="mk"><svg viewBox="0 0 24 24" fill="none"><path d="M3 13l2-6h9l3 4h4v5h-2a2.5 2.5 0 11-5 0H10a2.5 2.5 0 11-5 0H3v-3z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1.6" fill="#fff"/><circle cx="16.5" cy="16" r="1.6" fill="#fff"/></svg></div>
+  <div class="nm">Эщливери<small>Project Canvas</small></div>
+</div>
+
+<div class="hint" id="hint"><b>Тяни</b> пустое поле — пан · <b>Колесо</b> — зум · тяни ноду — двигать</div>
+
+<div id="viewport">
+  <div id="world">
+    <svg id="edges">
+      <defs>
+        <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#B9BEC4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<div class="minimap" id="minimap"><div class="mm-view" id="mmView"></div></div>
+
+<div class="toolbar">
+  <button class="tbtn" id="zoomOut" title="Отдалить"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <span class="zoom-lvl" id="zoomLvl" title="Сбросить зум">100%</span>
+  <button class="tbtn" id="zoomIn" title="Приблизить"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <div class="tsep"></div>
+  <button class="tbtn" id="fitBtn" title="Показать всё"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9V5a1 1 0 011-1h4M20 9V5a1 1 0 00-1-1h-4M4 15v4a1 1 0 001 1h4M20 15v4a1 1 0 01-1 1h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <span class="tlabel">Scrum board · Эщливери</span>
+</div>
+
+<script>
+/* ============================================================
+   ДАННЫЕ ХОЛСТА — все ноды и связи задаются здесь, в коде
+   ============================================================ */
+const ICoral='var(--coral)', ITeal='var(--teal)', IViolet='var(--violet)', IAmber='var(--amber)', ISlate='var(--slate)';
+
+const NODES = [
+  /* --- HERO --- */
+  { id:'hero', x:40, y:40, w:330, cls:'hero-node', raw:`
+    <div class="nb">
+      <span class="eyebrow">Студенческий проект · Scrum</span>
+      <h1>Доставка до двери<br>за <span class="a">20 минут</span></h1>
+      <p>Кампусный сервис: студент собирает корзину и получает заказ у комнаты; курьер берёт заказы в «окнах» между парами.</p>
+      <div class="hstats">
+        <div><div class="v">6<span>нед</span></div><div class="l">MVP</div></div>
+        <div><div class="v">15<span>SP</span></div><div class="l">Velocity</div></div>
+        <div><div class="v">3</div><div class="l">Спринта</div></div>
+        <div><div class="v">5</div><div class="l">Команда</div></div>
+      </div>
+    </div>`},
+
+  /* --- PERSONAS --- */
+  { id:'maxim', x:40, y:430, w:340, head:['Заказчик','PERSONA',ICoral], body:`
+    <div class="persona-head">
+      <div class="avatar" style="background:linear-gradient(135deg,#FF7A5C,#FF5436)">МЗ</div>
+      <div><h4>Максим Зданович</h4>
+        <span class="role-pill" style="background:var(--coral-soft);color:var(--coral-ink)">● ЗАКАЗЧИК · 19 · 2 курс</span></div>
+    </div>
+    <div class="chips"><span class="chip">плотное расписание</span><span class="chip">без машины</span><span class="chip">ограниченный бюджет</span></div>
+    <div class="split">
+      <div><div class="block-h"><span class="ic" style="background:var(--teal)"></span>Needs</div>
+        <ul class="clean" style="--bullet:var(--teal)"><li>Получать заказ не выходя из корпуса</li><li>Экономить время на учёбу</li></ul></div>
+      <div><div class="block-h"><span class="ic" style="background:var(--violet)"></span>Мотивация</div>
+        <ul class="clean" style="--bullet:var(--violet)"><li>Заказ у двери, а не на КПП</li><li>Платить меньше крупных сервисов</li><li>Быстро, между парами</li></ul></div>
+    </div>
+    <div class="block-h" style="margin-top:10px"><span class="ic" style="background:var(--coral)"></span>Боли</div>
+    <ul class="clean"><li>Дорогая доставка крупных сервисов</li><li>Везут только до КПП</li><li>Нет времени идти в магазин вечером</li></ul>
+    <div class="quote">Хочу заказать и получить у двери за 20 минут, и недорого.</div>`},
+
+  { id:'leon', x:40, y:920, w:340, head:['Курьер','PERSONA',ITeal], body:`
+    <div class="persona-head">
+      <div class="avatar" style="background:linear-gradient(135deg,#16A085,#0E7C66)">ЛЗ</div>
+      <div><h4>Леон Завгородний</h4>
+        <span class="role-pill" style="background:var(--teal-soft);color:var(--teal-ink)">● КУРЬЕР · 20 · 3 курс IT</span></div>
+    </div>
+    <div class="chips"><span class="chip">«окна» между парами</span><span class="chip">без жёсткого графика</span></div>
+    <div class="split">
+      <div><div class="block-h"><span class="ic" style="background:var(--teal)"></span>Needs</div>
+        <ul class="clean" style="--bullet:var(--teal)"><li>Зарабатывать рядом с домом</li><li>Получить IT / командный опыт</li></ul></div>
+      <div><div class="block-h"><span class="ic" style="background:var(--violet)"></span>Мотивация</div>
+        <ul class="clean" style="--bullet:var(--violet)"><li>Заказы рядом, между парами</li><li>Прозрачный заработок</li><li>Гибкий график</li></ul></div>
+    </div>
+    <div class="block-h" style="margin-top:10px"><span class="ic" style="background:var(--coral)"></span>Боли</div>
+    <ul class="clean"><li>Подработка = фикс. график и поездки</li><li>Хочет работать на знакомом кампусе</li><li>Нужен понятный учёт заработка</li></ul>
+    <div class="quote">Беру пару заказов между парами — и уже на кофе заработал.</div>`},
+
+  /* --- USER STORIES --- */
+  { id:'st-onb', x:460, y:40, w:360, head:['Этап 1 · Онбординг','USER STORIES',IViolet], body:`
+    <div class="us"><span class="us-id">US1</span><div>Как студент — <em>зарегистрироваться по студ. почте</em> и указать корпус/комнату.</div></div>
+    <div class="us"><span class="us-id">US2</span><div>Как вернувшийся — <em>войти в аккаунт</em>, видеть данные и заказы.</div></div>`},
+
+  { id:'st-cat', x:460, y:240, w:360, head:['Этап 2 · Каталог и заказ','USER STORIES',IViolet], body:`
+    <div class="us"><span class="us-id">US3</span><div>Просматривать <em>каталог с ценами</em>.</div></div>
+    <div class="us"><span class="us-id">US4</span><div><em>Искать товар</em> по названию/категории.</div></div>
+    <div class="us"><span class="us-id">US5</span><div><em>Корзина</em>: добавлять и менять количество.</div></div>
+    <div class="us"><span class="us-id">US6</span><div><em>Оформить заказ</em> с корпусом и комнатой.</div></div>
+    <div class="us"><span class="us-id">US7a</span><div><em>Оплата картой онлайн</em>.</div></div>
+    <div class="us"><span class="us-id">US7b</span><div><em>Оплата при получении</em>.</div></div>`},
+
+  { id:'st-del', x:460, y:700, w:360, head:['Этап 3 · Доставка и курьер','USER STORIES',IViolet], body:`
+    <div class="us"><span class="us-id">US8</span><div><em>Отслеживать статус</em> заказа и курьера.</div></div>
+    <div class="us"><span class="us-id">US9</span><div><em>Уведомления</em> о статусе.</div></div>
+    <div class="us"><span class="us-id">US11</span><div>Курьер — <em>регистрация</em> + базовая проверка.</div></div>
+    <div class="us"><span class="us-id">US12a</span><div>Курьер — <em>список доступных заказов</em> рядом.</div></div>
+    <div class="us"><span class="us-id">US12b</span><div>Курьер — <em>принять / отменить</em> заказ.</div></div>
+    <div class="us"><span class="us-id">US13</span><div>Курьер — <em>адрес/комната и маршрут</em>.</div></div>`},
+
+  { id:'st-fin', x:460, y:1160, w:360, head:['Этап 4 · Завершение и поддержка','USER STORIES',IViolet], body:`
+    <div class="us"><span class="us-id">US10</span><div><em>Оценить доставку</em> и курьера.</div></div>
+    <div class="us"><span class="us-id">US14</span><div>Курьер — <em>история заработка</em> и выплаты.</div></div>
+    <div class="us"><span class="us-id">US15</span><div><em>Поддержка</em> при проблеме.</div></div>
+    <div class="us"><span class="us-id">US16</span><div>Админ — <em>модерация</em> курьеров и товаров.</div></div>`},
+
+  /* --- DoR / DoD --- */
+  { id:'dor', x:900, y:40, w:360, head:['Definition of Ready','ВХОД В СПРИНТ',ICoral], body:`
+    <div class="crit"><div class="crit-n">1</div><div><div class="t">Шаблон «Как… хочу… чтобы…», ценность ясна.</div><div class="c">→ есть пользователь, действие, цель</div></div></div>
+    <div class="crit"><div class="crit-n">2</div><div><div class="t">Есть критерии приёмки (Given-When-Then).</div><div class="c">→ каждый пункт GWT описан</div></div></div>
+    <div class="crit"><div class="crit-n">3</div><div><div class="t">Оценена в SP, помещается в спринт.</div><div class="c">→ ≤ 7.5 SP (½ от velocity 15)</div></div></div>
+    <div class="crit"><div class="crit-n">4</div><div><div class="t">Описание понятно команде.</div><div class="c">→ нет открытых вопросов</div></div></div>`},
+
+  { id:'dod', x:900, y:440, w:360, head:['Definition of Done','ВЫХОД В ГОТОВНОСТЬ',ITeal], body:`
+    <div class="crit"><div class="crit-n">1</div><div><div class="t">Код смержен в main через PR.</div></div></div>
+    <div class="crit"><div class="crit-n">2</div><div><div class="t">Код-ревью минимум одним участником.</div></div></div>
+    <div class="crit"><div class="crit-n">3</div><div><div class="t">Тесты зелёные, сборка проходит (CI).</div></div></div>
+    <div class="crit"><div class="crit-n">4</div><div><div class="t">Все критерии приёмки выполнены (демо).</div></div></div>
+    <div class="crit"><div class="crit-n">5</div><div><div class="t">Развёрнуто на пилотном корпусе, README обновлён.</div></div></div>
+    <div class="note">Команда работает урывками между парами: чёткий <b>вход</b> защищает от сырых задач, обязательный <b>деплой</b> — от «готового», но нерабочего у студентов.</div>`},
+
+  { id:'dor-app', x:900, y:980, w:380, head:['DoR · применение','ПРОВЕРКА US6',ICoral], body:`
+    <div class="us" style="border-color:var(--coral);margin-bottom:11px"><span class="us-id">US6</span><div>Оформить заказ с корпусом и комнатой, чтобы курьер доставил к двери.</div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">В корзине товар, пользователь авторизован.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Выбирает корпус/комнату, жмёт «Оформить».</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Заказ «Ожидает курьера», адрес сохранён, есть номер.</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Поле «комната» пустое.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Жмёт «Оформить заказ».</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Заказ не создаётся, ошибка валидации.</div></div></div>
+    <div class="verdict">✓ SP=5 · соответствует Definition of Ready</div>`},
+
+  { id:'dod-app', x:900, y:1500, w:380, head:['DoD · применение','ПРОВЕРКА US1',ITeal], body:`
+    <div class="us" style="border-color:var(--teal);margin-bottom:11px"><span class="us-id" style="color:var(--teal-ink);background:var(--teal-soft)">US1</span><div>Регистрация по студ. почте с указанием корпуса/комнаты.</div></div>
+    <div class="crit"><div class="crit-n">1</div><div><div class="t">Код смержен через PR в main.</div></div></div>
+    <div class="crit"><div class="crit-n">2</div><div><div class="t">Ревью вторым разработчиком.</div></div></div>
+    <div class="crit"><div class="crit-n">3</div><div><div class="t">Юнит-тесты валидации зелёные, CI проходит.</div></div></div>
+    <div class="crit"><div class="crit-n">4</div><div><div class="t">Все AC выполнены.</div><div class="c">аккаунт создаётся, каталог открыт, ошибки почты работают</div></div></div>
+    <div class="crit"><div class="crit-n">5</div><div><div class="t">Развёрнуто на пилоте, README обновлён.</div></div></div>
+    <div class="verdict">✓ соответствует Definition of Done</div>`},
+
+  /* --- SPRINT STORIES --- */
+  { id:'sp-us1', x:1360, y:40, w:330, head:['История спринта','SP 3',ICoral], body:`
+    <div class="sp-top"><div class="sp-title">US1 · Регистрация<br>по студ. почте</div><div class="sp-badge"><div class="n">3</div><div class="l">Story Pts</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Корректная студ. почта.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Подтверждает код из письма.</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Аккаунт создан, каталог открыт.</div></div></div>
+    <span class="invest-tag iv-ok">✓ INVEST — все значения подходят</span>`},
+
+  { id:'sp-us6', x:1360, y:340, w:330, head:['История спринта','SP 5',ICoral], body:`
+    <div class="sp-top"><div class="sp-title">US6 · Оформление<br>заказа с адресом</div><div class="sp-badge"><div class="n">5</div><div class="l">Story Pts</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Товар в корзине, авторизован.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Выбирает корпус/комнату, оформляет.</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Заказ «Ожидает курьера», номер показан.</div></div></div>
+    <span class="invest-tag iv-ok">✓ INVEST — все значения подходят</span>`},
+
+  { id:'sp-us7a', x:1360, y:640, w:330, head:['История спринта','SP 5',ICoral], body:`
+    <div class="sp-top"><div class="sp-title">US7a · Онлайн-<br>оплата картой</div><div class="sp-badge"><div class="n">5</div><div class="l">Story Pts</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ оформлен, ждёт оплаты.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Вводит карту и подтверждает.</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Списание, статус «Оплачен».</div></div></div>
+    <span class="invest-tag iv-ok">✓ INVEST — декомпозирована из US7 (S)</span>`},
+
+  { id:'sp-us12b', x:1360, y:940, w:330, head:['История спринта','SP 3',ICoral], body:`
+    <div class="sp-top"><div class="sp-title">US12b · Приём и<br>отмена заказа</div><div class="sp-badge"><div class="n">3</div><div class="l">Story Pts</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ «Ожидает курьера».</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Курьер жмёт «Принять».</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Закреплён, «Принят», другим не виден.</div></div></div>
+    <span class="invest-tag iv-ok">✓ INVEST — декомпозирована из US12 (S)</span>`},
+
+  { id:'sp-us8', x:1360, y:1240, w:360, head:['История спринта','SP 8',IAmber], body:`
+    <div class="sp-top"><div class="sp-title">US8 · Трекинг<br>заказа и курьера</div><div class="sp-badge"><div class="n">8</div><div class="l">Story Pts</div></div></div>
+    <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ передан курьеру.</div></div>
+      <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Открывает экран заказа.</div></div>
+      <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">На карте — позиция курьера и ETA.</div></div></div>
+    <span class="invest-tag iv-warn">⚠ I и S не подходят: зависит от US12, велика для спринта при part-time</span>`},
+
+  /* --- INVEST --- */
+  { id:'invest', x:1760, y:40, w:430, head:['INVEST','КРИТЕРИЙ ИСТОРИИ',ICoral], body:`
+    <div class="iv-grid">
+      <div class="iv-cell"><div class="L">I</div><div><div class="w">Independent<span>Независимая</span></div><div class="d">Не зависит от других — любой порядок реализации.</div></div></div>
+      <div class="iv-cell"><div class="L">N</div><div><div class="w">Negotiable<span>Обсуждаемая</span></div><div class="d">Точка для диалога, а не ТЗ. Детали — с командой.</div></div></div>
+      <div class="iv-cell"><div class="L">V</div><div><div class="w">Valuable<span>Ценная</span></div><div class="d">Реальная польза. Нет ценности — задача не нужна.</div></div></div>
+      <div class="iv-cell"><div class="L">E</div><div><div class="w">Estimable<span>Оцениваемая</span></div><div class="d">Команда может оценить трудоёмкость.</div></div></div>
+      <div class="iv-cell"><div class="L">S</div><div><div class="w">Small<span>Небольшая</span></div><div class="d">Укладывается в один спринт.</div></div></div>
+      <div class="iv-cell"><div class="L">T</div><div><div class="w">Testable<span>Проверяемая</span></div><div class="d">Чёткие критерии: выполнено или нет.</div></div></div>
+    </div>`},
+
+  /* --- TEAM --- */
+  { id:'team', x:1760, y:430, w:430, head:['Состав команды','5 ЧЕЛОВЕК · PART-TIME',IViolet], body:`
+    <div class="member"><div class="mh"><div class="rn">1</div><h5>Product Owner / аналитик</h5></div><p>продукт · требования · приоритизация бэклога · связь с администрацией</p></div>
+    <div class="member"><div class="mh"><div class="rn">2</div><h5>Scrum Master / fullstack</h5></div><p>Scrum-процессы · встречи · устранение препятствий · разработка</p></div>
+    <div class="member"><div class="mh"><div class="rn">3</div><h5>Backend-разработчик</h5></div><p>сервер и API · база данных · логика заказов и подбора курьера</p></div>
+    <div class="member"><div class="mh"><div class="rn">4</div><h5>Frontend-разработчик</h5></div><p>мобильный UI (каталог, корзина, заказ) · компоненты · интеграция API</p></div>
+    <div class="member"><div class="mh"><div class="rn">5</div><h5>QA + DevOps</h5></div><p>тесты · CI/CD · деплой на пилот · автоматизация сборки</p></div>`},
+
+  /* --- MOSCOW --- */
+  { id:'moscow', x:2270, y:40, w:420, head:['Приоритизация MoSCoW','ЧТО В КАКОЙ ВЕРСИИ',ICoral], body:`
+    <div class="mos m-must"><div class="mos-h">Must have <span class="ct">MVP · 39 SP</span></div>
+      <div class="mos-row"><span class="uid">US1</span>Регистрация студента<span class="spx">3</span></div>
+      <div class="mos-row"><span class="uid">US2</span>Вход в аккаунт<span class="spx">2</span></div>
+      <div class="mos-row"><span class="uid">US3</span>Каталог с ценами<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US5</span>Корзина<span class="spx">3</span></div>
+      <div class="mos-row"><span class="uid">US6</span>Оформление заказа<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US7a</span>Онлайн-оплата<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US7b</span>Оплата при получении<span class="spx">3</span></div>
+      <div class="mos-row"><span class="uid">US11</span>Регистрация курьера<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US12a</span>Список заказов<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US12b</span>Приём / отмена<span class="spx">3</span></div></div>
+    <div class="mos m-should"><div class="mos-h">Should have <span class="ct">v1.1 · 19 SP</span></div>
+      <div class="mos-row"><span class="uid">US4</span>Поиск<span class="spx">3</span></div>
+      <div class="mos-row"><span class="uid">US8</span>Трекинг<span class="spx">8</span></div>
+      <div class="mos-row"><span class="uid">US9</span>Push-уведомления<span class="spx">3</span></div>
+      <div class="mos-row"><span class="uid">US13</span>Навигация курьера<span class="spx">5</span></div></div>
+    <div class="mos m-could"><div class="mos-h">Could have <span class="ct">v1.2 · 10 SP</span></div>
+      <div class="mos-row"><span class="uid">US10</span>Оценка доставки<span class="spx">2</span></div>
+      <div class="mos-row"><span class="uid">US14</span>История заработка<span class="spx">5</span></div>
+      <div class="mos-row"><span class="uid">US15</span>Поддержка<span class="spx">3</span></div></div>
+    <div class="mos m-wont"><div class="mos-h">Won't have <span class="ct">next · 8 SP</span></div>
+      <div class="mos-row"><span class="uid">US16</span>Админ-модерация<span class="spx">8</span></div>
+      <div class="mos-note">Для проверки спроса на пилоте достаточно ручного контроля.</div></div>`},
+
+  /* --- MVP --- */
+  { id:'mvp', x:2740, y:40, w:380, head:['MVP','СКВОЗНОЙ ЦИКЛ',ITeal], body:`
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US1</span>Регистрация студента</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US2</span>Вход в аккаунт</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US3</span>Каталог с ценами</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US5</span>Корзина</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US6</span>Оформление заказа</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US7a</span>Онлайн-оплата</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US7b</span>Оплата при получении</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US11</span>Регистрация курьера</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US12a</span>Список заказов</div>
+    <div class="mvp-row"><span class="ck"></span><span class="uid">US12b</span>Приём и отмена</div>
+    <div class="note">Замыкают цикл <b>заказ → доставка</b>. Без любой история рвётся. Трекинг, поиск, уведомления, оценки — улучшения, не нужные для проверки спроса.</div>`},
+
+  /* --- METRICS --- */
+  { id:'velocity', x:2740, y:640, w:380, head:['Velocity · 15 SP','ОТКУДА ЦИФРА',ICoral], body:`
+    <div class="bigstat"><div class="v">15<small> SP</small></div><div class="l">за двухнедельный спринт</div></div>
+    <div class="lead">Команда 5 чел., part-time. Код пишут трое: <b>SM/fullstack, Backend, Frontend</b>. PO и QA+DevOps не коммитят. ~2–3 ч/день между парами. Эталон US2 = 2 SP.<br><b>3 × ~5 SP = 15 SP.</b></div>`},
+
+  { id:'calc', x:2740, y:920, w:380, head:['Расчёт спринтов','MVP → ПОЛНАЯ ВЕРСИЯ',ITeal], body:`
+    <div class="calc" style="margin-bottom:11px">MVP = <b>39 SP</b> / 15 = 2,6 → <b>3 спринта</b><br>3 × 2 нед = <b>6 недель</b></div>
+    <div class="bar"><i style="width:33.3%;background:var(--coral)"></i><i style="width:33.3%;background:#FF7A5C"></i><i style="width:33.4%;background:#FFA189"></i></div>
+    <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between"><span>Спр 1·15</span><span>Спр 2·15</span><span>Спр 3·9</span></div>
+    <div class="calc" style="margin-top:13px">Полная (Must+Should+Could) = <b>68 SP</b><br>68 / 15 = 4,53 → <b>5 спринтов</b> = <b>10 недель</b></div>`},
+];
+
+/* связи: from → to */
+const EDGES = [
+  ['hero','maxim'],['hero','leon'],
+  ['maxim','st-cat'],['maxim','st-onb'],['leon','st-del'],['leon','st-fin'],
+  ['st-onb','dor'],['st-cat','dor'],['dor','dod'],
+  ['dor','dor-app'],['dod','dod-app'],
+  ['st-cat','sp-us6'],['st-cat','sp-us7a'],['st-onb','sp-us1'],['st-del','sp-us12b'],['st-del','sp-us8'],
+  ['sp-us1','invest'],['sp-us8','invest'],
+  ['dod','team'],
+  ['st-cat','moscow'],['st-del','moscow'],['st-fin','moscow'],
+  ['moscow','mvp'],['mvp','velocity'],['velocity','calc'],
+];
+
+/* ============================================================
+   ДВИЖОК ХОЛСТА — пан / зум / драг / связи / миникарта
+   ============================================================ */
+const viewport=document.getElementById('viewport');
+const world=document.getElementById('world');
+const svg=document.getElementById('edges');
+const zoomLvl=document.getElementById('zoomLvl');
+const minimap=document.getElementById('minimap');
+const mmView=document.getElementById('mmView');
+
+let scale=1, tx=0, ty=0;
+const MIN=.18, MAX=2.4;
+const elById={};
+
+// --- build nodes ---
+NODES.forEach(n=>{
+  const el=document.createElement('div');
+  el.className='node'+(n.cls?(' '+n.cls):'');
+  el.style.left=n.x+'px'; el.style.top=n.y+'px'; el.style.width=n.w+'px';
+  el.dataset.id=n.id;
+  let html='';
+  if(n.raw){ html=n.raw; }
+  else{
+    const hd=n.headFix||n.head;
+    html=`<div class="nh"><span class="tag" style="background:${hd[2]}"></span><h3>${hd[0]}</h3><span class="kicker">${hd[1]}</span></div><div class="nb">${n.body}</div>`;
+  }
+  el.innerHTML=html;
+  world.appendChild(el);
+  elById[n.id]=el;
+  makeDraggable(el);
+});
+
+// --- transform ---
+function applyTransform(){
+  world.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
+  viewport.style.backgroundSize=(26*scale)+'px '+(26*scale)+'px';
+  viewport.style.backgroundPosition=tx+'px '+ty+'px';
+  zoomLvl.textContent=Math.round(scale*100)+'%';
+  updateMinimap();
+}
+
+// --- pan ---
+let panning=false, panSX=0, panSY=0, panTX=0, panTY=0;
+viewport.addEventListener('pointerdown', e=>{
+  if(e.target.closest('.node')) return;
+  panning=true; viewport.classList.add('grabbing');
+  panSX=e.clientX; panSY=e.clientY; panTX=tx; panTY=ty;
+  viewport.setPointerCapture(e.pointerId);
+});
+viewport.addEventListener('pointermove', e=>{
+  if(!panning) return;
+  tx=panTX+(e.clientX-panSX); ty=panTY+(e.clientY-panSY);
+  applyTransform();
+});
+viewport.addEventListener('pointerup', e=>{ panning=false; viewport.classList.remove('grabbing'); });
+viewport.addEventListener('pointercancel', ()=>{ panning=false; viewport.classList.remove('grabbing'); });
+
+// --- zoom on wheel ---
+viewport.addEventListener('wheel', e=>{
+  e.preventDefault();
+  const r=viewport.getBoundingClientRect();
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  const factor=Math.exp(-e.deltaY*0.0015);
+  const ns=Math.min(MAX,Math.max(MIN,scale*factor));
+  const wx=(mx-tx)/scale, wy=(my-ty)/scale;
+  tx=mx-wx*ns; ty=my-wy*ns; scale=ns;
+  applyTransform();
+  hideHint();
+},{passive:false});
+
+// --- node drag ---
+function makeDraggable(el){
+  let dragging=false, sx=0, sy=0, ox=0, oy=0;
+  el.addEventListener('pointerdown', e=>{
+    e.stopPropagation();
+    dragging=true; el.classList.add('drag');
+    sx=e.clientX; sy=e.clientY; ox=parseFloat(el.style.left); oy=parseFloat(el.style.top);
+    el.setPointerCapture(e.pointerId);
+    hideHint();
+  });
+  el.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    el.style.left=(ox+(e.clientX-sx)/scale)+'px';
+    el.style.top=(oy+(e.clientY-sy)/scale)+'px';
+    renderEdges();
+  });
+  const end=()=>{ if(dragging){dragging=false; el.classList.remove('drag'); updateMinimap();} };
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointercancel', end);
+}
+
+// --- edges ---
+function anchors(a,b){
+  const ax=a.offsetLeft, ay=a.offsetTop, aw=a.offsetWidth, ah=a.offsetHeight;
+  const bx=b.offsetLeft, by=b.offsetTop, bw=b.offsetWidth, bh=b.offsetHeight;
+  const acx=ax+aw/2, acy=ay+ah/2, bcx=bx+bw/2, bcy=by+bh/2;
+  const dx=bcx-acx, dy=bcy-acy;
+  let p1,p2,c1,c2;
+  if(Math.abs(dx)>=Math.abs(dy)){ // horizontal dominant
+    if(dx>=0){ p1=[ax+aw,acy]; p2=[bx,bcy]; } else { p1=[ax,acy]; p2=[bx+bw,bcy]; }
+    const k=Math.max(40,Math.abs(p2[0]-p1[0])*0.45);
+    c1=[p1[0]+(dx>=0?k:-k),p1[1]]; c2=[p2[0]+(dx>=0?-k:k),p2[1]];
+  }else{ // vertical dominant
+    if(dy>=0){ p1=[acx,ay+ah]; p2=[bcx,by]; } else { p1=[acx,ay]; p2=[bcx,by+bh]; }
+    const k=Math.max(40,Math.abs(p2[1]-p1[1])*0.45);
+    c1=[p1[0],p1[1]+(dy>=0?k:-k)]; c2=[p2[0],p2[1]+(dy>=0?-k:k)];
+  }
+  return {p1,p2,c1,c2};
+}
+function renderEdges(){
+  // clear old paths (keep defs)
+  [...svg.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  EDGES.forEach(([f,t])=>{
+    const a=elById[f], b=elById[t];
+    if(!a||!b) return;
+    const {p1,p2,c1,c2}=anchors(a,b);
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','edge');
+    path.setAttribute('d',`M ${p1[0]} ${p1[1]} C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${p2[0]} ${p2[1]}`);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','#C3C8CE');
+    path.setAttribute('stroke-width','2');
+    path.setAttribute('stroke-linecap','round');
+    path.setAttribute('marker-end','url(#arrow)');
+    svg.appendChild(path);
+  });
+}
+
+// --- bounding box of all nodes ---
+function bbox(){
+  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  NODES.forEach(n=>{
+    const el=elById[n.id];
+    const x=el.offsetLeft, y=el.offsetTop, w=el.offsetWidth, h=el.offsetHeight;
+    minX=Math.min(minX,x); minY=Math.min(minY,y);
+    maxX=Math.max(maxX,x+w); maxY=Math.max(maxY,y+h);
+  });
+  return {minX,minY,maxX,maxY,w:maxX-minX,h:maxY-minY};
+}
+
+// --- fit to screen ---
+function fit(pad=80){
+  const bb=bbox();
+  const vw=viewport.clientWidth, vh=viewport.clientHeight;
+  const s=Math.min((vw-pad*2)/bb.w,(vh-pad*2)/bb.h);
+  scale=Math.min(MAX,Math.max(MIN,s));
+  tx=(vw-bb.w*scale)/2 - bb.minX*scale;
+  ty=(vh-bb.h*scale)/2 - bb.minY*scale;
+  applyTransform();
+}
+
+// --- zoom buttons (toward viewport center) ---
+function zoomBy(factor){
+  const vw=viewport.clientWidth, vh=viewport.clientHeight;
+  const mx=vw/2, my=vh/2;
+  const ns=Math.min(MAX,Math.max(MIN,scale*factor));
+  const wx=(mx-tx)/scale, wy=(my-ty)/scale;
+  tx=mx-wx*ns; ty=my-wy*ns; scale=ns; applyTransform();
+}
+document.getElementById('zoomIn').onclick=()=>zoomBy(1.2);
+document.getElementById('zoomOut').onclick=()=>zoomBy(1/1.2);
+document.getElementById('fitBtn').onclick=()=>fit();
+zoomLvl.onclick=()=>{ // reset to 100% centered on bbox center
+  const bb=bbox(), vw=viewport.clientWidth, vh=viewport.clientHeight;
+  scale=1; tx=vw/2-(bb.minX+bb.w/2); ty=vh/2-(bb.minY+bb.h/2); applyTransform();
+};
+
+// --- minimap ---
+let mmScale=1, mmBB=null;
+function buildMinimap(){
+  [...minimap.querySelectorAll('.mm-node')].forEach(e=>e.remove());
+  mmBB=bbox();
+  const pad=40;
+  const W=minimap.clientWidth, H=minimap.clientHeight;
+  mmScale=Math.min((W-12)/(mmBB.w+pad*2),(H-12)/(mmBB.h+pad*2));
+  const offX=(W-(mmBB.w+pad*2)*mmScale)/2, offY=(H-(mmBB.h+pad*2)*mmScale)/2;
+  minimap._off={x:offX,y:offY,padX:mmBB.minX-pad,padY:mmBB.minY-pad};
+  NODES.forEach(n=>{
+    const el=elById[n.id];
+    const d=document.createElement('div'); d.className='mm-node';
+    d.style.left=(offX+(el.offsetLeft-minimap._off.padX)*mmScale)+'px';
+    d.style.top=(offY+(el.offsetTop-minimap._off.padY)*mmScale)+'px';
+    d.style.width=Math.max(2,el.offsetWidth*mmScale)+'px';
+    d.style.height=Math.max(2,el.offsetHeight*mmScale)+'px';
+    if(n.id==='hero') d.style.background='var(--ink)';
+    minimap.insertBefore(d,mmView);
+  });
+}
+function updateMinimap(){
+  if(!minimap._off) return;
+  const o=minimap._off;
+  // visible world rect
+  const vw=viewport.clientWidth, vh=viewport.clientHeight;
+  const wx=-tx/scale, wy=-ty/scale, ww=vw/scale, wh=vh/scale;
+  mmView.style.left=(o.x+(wx-o.padX)*mmScale)+'px';
+  mmView.style.top=(o.y+(wy-o.padY)*mmScale)+'px';
+  mmView.style.width=(ww*mmScale)+'px';
+  mmView.style.height=(wh*mmScale)+'px';
+  // refresh node positions (after drag)
+  const mnodes=minimap.querySelectorAll('.mm-node');
+  NODES.forEach((n,i)=>{
+    const el=elById[n.id], d=mnodes[i]; if(!d) return;
+    d.style.left=(o.x+(el.offsetLeft-o.padX)*mmScale)+'px';
+    d.style.top=(o.y+(el.offsetTop-o.padY)*mmScale)+'px';
+  });
+}
+
+// --- hint ---
+let hintTimer;
+function hideHint(){ document.getElementById('hint').classList.add('hide'); clearTimeout(hintTimer); }
+hintTimer=setTimeout(hideHint,5000);
+
+// --- init (after fonts/layout settle) ---
+function init(){
+  renderEdges();
+  buildMinimap();
+  fit();
+}
+if(document.fonts&&document.fonts.ready){
+  document.fonts.ready.then(()=>{ init(); setTimeout(()=>{renderEdges();buildMinimap();updateMinimap();},150); });
+}else{ window.addEventListener('load',init); }
+window.addEventListener('load',()=>setTimeout(init,200));
+window.addEventListener('resize',()=>{ buildMinimap(); updateMinimap(); renderEdges(); });
+</script>
+</body>
+</html>
