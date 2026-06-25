@@ -104,6 +104,7 @@ ul.clean li::before{content:"";position:absolute;left:0;top:7px;width:5px;height
   padding:4px 9px;border-radius:7px;margin-top:9px;line-height:1.3}
 .iv-ok{background:var(--teal-soft);color:var(--teal-ink)}
 .iv-warn{background:var(--amber-soft);color:var(--amber)}
+.color-red{color:#B82C13}
 
 /* invest letters */
 .iv-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -246,7 +247,7 @@ const ICoral='var(--coral)', ITeal='var(--teal)', IViolet='var(--violet)', IAmbe
 
 const NODES = [
   /* --- HERO --- */
-  { id:'hero', x:40, y:40, w:330, cls:'hero-node', raw:`
+  { id:'hero', x:1500, y:0, w:330, cls:'hero-node', raw:`
     <div class="nb">
       <span class="eyebrow">Студенческий проект · Scrum</span>
       <h1>Доставка до двери<br>за <span class="a">20 минут</span></h1>
@@ -260,9 +261,9 @@ const NODES = [
     </div>`},
 
   /* --- PERSONAS --- */
-  { id:'maxim', x:40, y:430, w:340, head:['Заказчик','PERSONA',ICoral], body:`
+  { id:'maxim', x:1830, y:300, w:340, head:['Заказчик','PERSONA',ICoral], body:`
     <div class="persona-head">
-      <div class="avatar" style="background:linear-gradient(135deg,#FF7A5C,#FF5436)">МЗ</div>
+      <div class="avatar" style="background:linear-gradient(135deg,#FF7A5C,#FF5436)"><img src="max.png" alt="max" height="42px"></div>
       <div><h4>Максим Зданович</h4>
         <span class="role-pill" style="background:var(--coral-soft);color:var(--coral-ink)">● ЗАКАЗЧИК · 19 · 2 курс</span></div>
     </div>
@@ -277,9 +278,9 @@ const NODES = [
     <ul class="clean"><li>Дорогая доставка крупных сервисов</li><li>Везут только до КПП</li><li>Нет времени идти в магазин вечером</li></ul>
     <div class="quote">Хочу заказать и получить у двери за 20 минут, и недорого.</div>`},
 
-  { id:'leon', x:40, y:920, w:340, head:['Курьер','PERSONA',ITeal], body:`
+  { id:'leon', x:1160, y:300, w:340, head:['Курьер','PERSONA',ITeal], body:`
     <div class="persona-head">
-      <div class="avatar" style="background:linear-gradient(135deg,#16A085,#0E7C66)">ЛЗ</div>
+      <div class="avatar" style="background:linear-gradient(135deg,#16A085,#0E7C66)"><img src="leon.png" alt="max" height="42px"></div>
       <div><h4>Леон Завгородний</h4>
         <span class="role-pill" style="background:var(--teal-soft);color:var(--teal-ink)">● КУРЬЕР · 20 · 3 курс IT</span></div>
     </div>
@@ -295,11 +296,11 @@ const NODES = [
     <div class="quote">Беру пару заказов между парами — и уже на кофе заработал.</div>`},
 
   /* --- USER STORIES --- */
-  { id:'st-onb', x:460, y:40, w:360, head:['Этап 1 · Онбординг','USER STORIES',IViolet], body:`
+  { id:'st-onb', x:2400, y:300, w:360, head:['Этап 1 · Онбординг','USER STORIES',IViolet], body:`
     <div class="us"><span class="us-id">US1</span><div>Как студент — <em>зарегистрироваться по студ. почте</em> и указать корпус/комнату.</div></div>
     <div class="us"><span class="us-id">US2</span><div>Как вернувшийся — <em>войти в аккаунт</em>, видеть данные и заказы.</div></div>`},
 
-  { id:'st-cat', x:460, y:240, w:360, head:['Этап 2 · Каталог и заказ','USER STORIES',IViolet], body:`
+  { id:'st-cat', x:2800, y:300, w:360, head:['Этап 2 · Каталог и заказ','USER STORIES',IViolet], body:`
     <div class="us"><span class="us-id">US3</span><div>Просматривать <em>каталог с ценами</em>.</div></div>
     <div class="us"><span class="us-id">US4</span><div><em>Искать товар</em> по названию/категории.</div></div>
     <div class="us"><span class="us-id">US5</span><div><em>Корзина</em>: добавлять и менять количество.</div></div>
@@ -307,7 +308,7 @@ const NODES = [
     <div class="us"><span class="us-id">US7a</span><div><em>Оплата картой онлайн</em>.</div></div>
     <div class="us"><span class="us-id">US7b</span><div><em>Оплата при получении</em>.</div></div>`},
 
-  { id:'st-del', x:460, y:700, w:360, head:['Этап 3 · Доставка и курьер','USER STORIES',IViolet], body:`
+  { id:'st-del', x:3200, y:300, w:360, head:['Этап 3 · Доставка и курьер','USER STORIES',IViolet], body:`
     <div class="us"><span class="us-id">US8</span><div><em>Отслеживать статус</em> заказа и курьера.</div></div>
     <div class="us"><span class="us-id">US9</span><div><em>Уведомления</em> о статусе.</div></div>
     <div class="us"><span class="us-id">US11</span><div>Курьер — <em>регистрация</em> + базовая проверка.</div></div>
@@ -315,20 +316,20 @@ const NODES = [
     <div class="us"><span class="us-id">US12b</span><div>Курьер — <em>принять / отменить</em> заказ.</div></div>
     <div class="us"><span class="us-id">US13</span><div>Курьер — <em>адрес/комната и маршрут</em>.</div></div>`},
 
-  { id:'st-fin', x:460, y:1160, w:360, head:['Этап 4 · Завершение и поддержка','USER STORIES',IViolet], body:`
+  { id:'st-fin', x:3600, y:300, w:360, head:['Этап 4 · Завершение и поддержка','USER STORIES',IViolet], body:`
     <div class="us"><span class="us-id">US10</span><div><em>Оценить доставку</em> и курьера.</div></div>
     <div class="us"><span class="us-id">US14</span><div>Курьер — <em>история заработка</em> и выплаты.</div></div>
     <div class="us"><span class="us-id">US15</span><div><em>Поддержка</em> при проблеме.</div></div>
     <div class="us"><span class="us-id">US16</span><div>Админ — <em>модерация</em> курьеров и товаров.</div></div>`},
 
   /* --- DoR / DoD --- */
-  { id:'dor', x:900, y:40, w:360, head:['Definition of Ready','ВХОД В СПРИНТ',ICoral], body:`
+  { id:'dor', x:700, y:800, w:360, head:['Definition of Ready','ВХОД В СПРИНТ',ICoral], body:`
     <div class="crit"><div class="crit-n">1</div><div><div class="t">Шаблон «Как… хочу… чтобы…», ценность ясна.</div><div class="c">→ есть пользователь, действие, цель</div></div></div>
     <div class="crit"><div class="crit-n">2</div><div><div class="t">Есть критерии приёмки (Given-When-Then).</div><div class="c">→ каждый пункт GWT описан</div></div></div>
     <div class="crit"><div class="crit-n">3</div><div><div class="t">Оценена в SP, помещается в спринт.</div><div class="c">→ ≤ 7.5 SP (½ от velocity 15)</div></div></div>
     <div class="crit"><div class="crit-n">4</div><div><div class="t">Описание понятно команде.</div><div class="c">→ нет открытых вопросов</div></div></div>`},
 
-  { id:'dod', x:900, y:440, w:360, head:['Definition of Done','ВЫХОД В ГОТОВНОСТЬ',ITeal], body:`
+  { id:'dod', x:700, y:1100, w:360, head:['Definition of Done','ВЫХОД В ГОТОВНОСТЬ',ITeal], body:`
     <div class="crit"><div class="crit-n">1</div><div><div class="t">Код смержен в main через PR.</div></div></div>
     <div class="crit"><div class="crit-n">2</div><div><div class="t">Код-ревью минимум одним участником.</div></div></div>
     <div class="crit"><div class="crit-n">3</div><div><div class="t">Тесты зелёные, сборка проходит (CI).</div></div></div>
@@ -336,7 +337,7 @@ const NODES = [
     <div class="crit"><div class="crit-n">5</div><div><div class="t">Развёрнуто на пилотном корпусе, README обновлён.</div></div></div>
     <div class="note">Команда работает урывками между парами: чёткий <b>вход</b> защищает от сырых задач, обязательный <b>деплой</b> — от «готового», но нерабочего у студентов.</div>`},
 
-  { id:'dor-app', x:900, y:980, w:380, head:['DoR · применение','ПРОВЕРКА US6',ICoral], body:`
+  { id:'dor-app', x:1200, y:800, w:380, head:['DoR · применение','ПРОВЕРКА US6',ICoral], body:`
     <div class="us" style="border-color:var(--coral);margin-bottom:11px"><span class="us-id">US6</span><div>Оформить заказ с корпусом и комнатой, чтобы курьер доставил к двери.</div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">В корзине товар, пользователь авторизован.</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Выбирает корпус/комнату, жмёт «Оформить».</div></div>
@@ -346,7 +347,7 @@ const NODES = [
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Заказ не создаётся, ошибка валидации.</div></div></div>
     <div class="verdict">✓ SP=5 · соответствует Definition of Ready</div>`},
 
-  { id:'dod-app', x:900, y:1500, w:380, head:['DoD · применение','ПРОВЕРКА US1',ITeal], body:`
+  { id:'dod-app', x:1600, y:800, w:380, head:['DoD · применение','ПРОВЕРКА US1',ITeal], body:`
     <div class="us" style="border-color:var(--teal);margin-bottom:11px"><span class="us-id" style="color:var(--teal-ink);background:var(--teal-soft)">US1</span><div>Регистрация по студ. почте с указанием корпуса/комнаты.</div></div>
     <div class="crit"><div class="crit-n">1</div><div><div class="t">Код смержен через PR в main.</div></div></div>
     <div class="crit"><div class="crit-n">2</div><div><div class="t">Ревью вторым разработчиком.</div></div></div>
@@ -356,43 +357,43 @@ const NODES = [
     <div class="verdict">✓ соответствует Definition of Done</div>`},
 
   /* --- SPRINT STORIES --- */
-  { id:'sp-us1', x:1360, y:40, w:330, head:['История спринта','SP 3',ICoral], body:`
+  { id:'sp-us1', x:2180, y:800, w:330, head:['История спринта','SP 3',ICoral], body:`
     <div class="sp-top"><div class="sp-title">US1 · Регистрация<br>по студ. почте</div><div class="sp-badge"><div class="n">3</div><div class="l">Story Pts</div></div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Корректная студ. почта.</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Подтверждает код из письма.</div></div>
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Аккаунт создан, каталог открыт.</div></div></div>
     <span class="invest-tag iv-ok">✓ INVEST — все значения подходят</span>`},
 
-  { id:'sp-us6', x:1360, y:340, w:330, head:['История спринта','SP 5',ICoral], body:`
+  { id:'sp-us6', x:2560, y:800, w:330, head:['История спринта','SP 5',ICoral], body:`
     <div class="sp-top"><div class="sp-title">US6 · Оформление<br>заказа с адресом</div><div class="sp-badge"><div class="n">5</div><div class="l">Story Pts</div></div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Товар в корзине, авторизован.</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Выбирает корпус/комнату, оформляет.</div></div>
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Заказ «Ожидает курьера», номер показан.</div></div></div>
     <span class="invest-tag iv-ok">✓ INVEST — все значения подходят</span>`},
 
-  { id:'sp-us7a', x:1360, y:640, w:330, head:['История спринта','SP 5',ICoral], body:`
+  { id:'sp-us7a', x:2940, y:800, w:330, head:['История спринта','SP 5',ICoral], body:`
     <div class="sp-top"><div class="sp-title">US7a · Онлайн-<br>оплата картой</div><div class="sp-badge"><div class="n">5</div><div class="l">Story Pts</div></div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ оформлен, ждёт оплаты.</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Вводит карту и подтверждает.</div></div>
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Списание, статус «Оплачен».</div></div></div>
     <span class="invest-tag iv-ok">✓ INVEST — декомпозирована из US7 (S)</span>`},
 
-  { id:'sp-us12b', x:1360, y:940, w:330, head:['История спринта','SP 3',ICoral], body:`
+  { id:'sp-us12b', x:3320, y:800, w:330, head:['История спринта','SP 3',ICoral], body:`
     <div class="sp-top"><div class="sp-title">US12b · Приём и<br>отмена заказа</div><div class="sp-badge"><div class="n">3</div><div class="l">Story Pts</div></div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ «Ожидает курьера».</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Курьер жмёт «Принять».</div></div>
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">Закреплён, «Принят», другим не виден.</div></div></div>
     <span class="invest-tag iv-ok">✓ INVEST — декомпозирована из US12 (S)</span>`},
 
-  { id:'sp-us8', x:1360, y:1240, w:360, head:['История спринта','SP 8',IAmber], body:`
+  { id:'sp-us8', x:3700, y:800, w:360, head:['История спринта','SP 8',IAmber], body:`
     <div class="sp-top"><div class="sp-title">US8 · Трекинг<br>заказа и курьера</div><div class="sp-badge"><div class="n">8</div><div class="l">Story Pts</div></div></div>
     <div class="gwt"><div class="gwt-row g-given"><div class="gwt-k">GIVEN</div><div class="gwt-v">Заказ передан курьеру.</div></div>
       <div class="gwt-row g-when"><div class="gwt-k">WHEN</div><div class="gwt-v">Открывает экран заказа.</div></div>
       <div class="gwt-row g-then"><div class="gwt-k">THEN</div><div class="gwt-v">На карте — позиция курьера и ETA.</div></div></div>
-    <span class="invest-tag iv-warn">⚠ I и S не подходят: зависит от US12, велика для спринта при part-time</span>`},
+    <span class="invest-tag iv-ok">⚠  <span class="color-red">I</span>NVE<span class="color-red">S</span>T зависит от US12, велика для спринта при part-time</span>`},
 
   /* --- INVEST --- */
-  { id:'invest', x:1760, y:40, w:430, head:['INVEST','КРИТЕРИЙ ИСТОРИИ',ICoral], body:`
+  { id:'invest', x:2180, y:1200, w:430, head:['INVEST','КРИТЕРИЙ ИСТОРИИ',ICoral], body:`
     <div class="iv-grid">
       <div class="iv-cell"><div class="L">I</div><div><div class="w">Independent<span>Независимая</span></div><div class="d">Не зависит от других — любой порядок реализации.</div></div></div>
       <div class="iv-cell"><div class="L">N</div><div><div class="w">Negotiable<span>Обсуждаемая</span></div><div class="d">Точка для диалога, а не ТЗ. Детали — с командой.</div></div></div>
@@ -403,7 +404,7 @@ const NODES = [
     </div>`},
 
   /* --- TEAM --- */
-  { id:'team', x:1760, y:430, w:430, head:['Состав команды','5 ЧЕЛОВЕК · PART-TIME',IViolet], body:`
+  { id:'team', x:1400, y:1300, w:430, head:['Состав команды','5 ЧЕЛОВЕК · PART-TIME',IViolet], body:`
     <div class="member"><div class="mh"><div class="rn">1</div><h5>Product Owner / аналитик</h5></div><p>продукт · требования · приоритизация бэклога · связь с администрацией</p></div>
     <div class="member"><div class="mh"><div class="rn">2</div><h5>Scrum Master / fullstack</h5></div><p>Scrum-процессы · встречи · устранение препятствий · разработка</p></div>
     <div class="member"><div class="mh"><div class="rn">3</div><h5>Backend-разработчик</h5></div><p>сервер и API · база данных · логика заказов и подбора курьера</p></div>
@@ -411,7 +412,7 @@ const NODES = [
     <div class="member"><div class="mh"><div class="rn">5</div><h5>QA + DevOps</h5></div><p>тесты · CI/CD · деплой на пилот · автоматизация сборки</p></div>`},
 
   /* --- MOSCOW --- */
-  { id:'moscow', x:2270, y:40, w:420, head:['Приоритизация MoSCoW','ЧТО В КАКОЙ ВЕРСИИ',ICoral], body:`
+  { id:'moscow', x:3000, y:1200, w:420, head:['Приоритизация MoSCoW','ЧТО В КАКОЙ ВЕРСИИ',ICoral], body:`
     <div class="mos m-must"><div class="mos-h">Must have <span class="ct">MVP · 39 SP</span></div>
       <div class="mos-row"><span class="uid">US1</span>Регистрация студента<span class="spx">3</span></div>
       <div class="mos-row"><span class="uid">US2</span>Вход в аккаунт<span class="spx">2</span></div>
@@ -437,7 +438,7 @@ const NODES = [
       <div class="mos-note">Для проверки спроса на пилоте достаточно ручного контроля.</div></div>`},
 
   /* --- MVP --- */
-  { id:'mvp', x:2740, y:40, w:380, head:['MVP','СКВОЗНОЙ ЦИКЛ',ITeal], body:`
+  { id:'mvp', x:2200, y:2000, w:380, head:['MVP','СКВОЗНОЙ ЦИКЛ',ITeal], body:`
     <div class="mvp-row"><span class="ck"></span><span class="uid">US1</span>Регистрация студента</div>
     <div class="mvp-row"><span class="ck"></span><span class="uid">US2</span>Вход в аккаунт</div>
     <div class="mvp-row"><span class="ck"></span><span class="uid">US3</span>Каталог с ценами</div>
@@ -451,29 +452,19 @@ const NODES = [
     <div class="note">Замыкают цикл <b>заказ → доставка</b>. Без любой история рвётся. Трекинг, поиск, уведомления, оценки — улучшения, не нужные для проверки спроса.</div>`},
 
   /* --- METRICS --- */
-  { id:'velocity', x:2740, y:640, w:380, head:['Velocity · 15 SP','ОТКУДА ЦИФРА',ICoral], body:`
+  { id:'velocity', x:2600, y:2000, w:380, head:['Velocity · 15 SP','ОТКУДА ЦИФРА',ICoral], body:`
     <div class="bigstat"><div class="v">15<small> SP</small></div><div class="l">за двухнедельный спринт</div></div>
     <div class="lead">Команда 5 чел., part-time. Код пишут трое: <b>SM/fullstack, Backend, Frontend</b>. PO и QA+DevOps не коммитят. ~2–3 ч/день между парами. Эталон US2 = 2 SP.<br><b>3 × ~5 SP = 15 SP.</b></div>`},
 
-  { id:'calc', x:2740, y:920, w:380, head:['Расчёт спринтов','MVP → ПОЛНАЯ ВЕРСИЯ',ITeal], body:`
+  { id:'calc', x:2600, y:2200, w:380, head:['Расчёт спринтов','MVP → ПОЛНАЯ ВЕРСИЯ',ITeal], body:`
     <div class="calc" style="margin-bottom:11px">MVP = <b>39 SP</b> / 15 = 2,6 → <b>3 спринта</b><br>3 × 2 нед = <b>6 недель</b></div>
     <div class="bar"><i style="width:33.3%;background:var(--coral)"></i><i style="width:33.3%;background:#FF7A5C"></i><i style="width:33.4%;background:#FFA189"></i></div>
     <div style="font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between"><span>Спр 1·15</span><span>Спр 2·15</span><span>Спр 3·9</span></div>
     <div class="calc" style="margin-top:13px">Полная (Must+Should+Could) = <b>68 SP</b><br>68 / 15 = 4,53 → <b>5 спринтов</b> = <b>10 недель</b></div>`},
 ];
 
-/* связи: from → to */
-const EDGES = [
-  ['hero','maxim'],['hero','leon'],
-  ['maxim','st-cat'],['maxim','st-onb'],['leon','st-del'],['leon','st-fin'],
-  ['st-onb','dor'],['st-cat','dor'],['dor','dod'],
-  ['dor','dor-app'],['dod','dod-app'],
-  ['st-cat','sp-us6'],['st-cat','sp-us7a'],['st-onb','sp-us1'],['st-del','sp-us12b'],['st-del','sp-us8'],
-  ['sp-us1','invest'],['sp-us8','invest'],
-  ['dod','team'],
-  ['st-cat','moscow'],['st-del','moscow'],['st-fin','moscow'],
-  ['moscow','mvp'],['mvp','velocity'],['velocity','calc'],
-];
+/* связи отключены */
+const EDGES = [];
 
 /* ============================================================
    ДВИЖОК ХОЛСТА — пан / зум / драг / связи / миникарта
