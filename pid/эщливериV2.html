@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Презентация проекта «Эщливери» — Проектно-исследовательская деятельность</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons for modern UI look -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Custom scrollbar for slides container */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #1f2937;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+        <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Эщливери</span>
+        <span class="text-xs text-slate-400 block -mt-1">Проектно-исследовательская деятельность</span>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700 font-medium">
+        Слайд <span id="current-slide-num">1</span> из <span id="total-slides-num">11</span>
+      </span>
+      <div class="flex gap-1 bg-slate-800 p-1 rounded-lg border border-slate-700">
+        <button onclick="prevSlide()" class="p-1.5 hover:bg-slate-700 rounded transition-colors text-slate-300 hover:text-white disabled:opacity-40" id="prev-btn">
+          <i data-lucide="chevron-left" class="w-5 h-5"></i>
+        </button>
+        <button onclick="nextSlide()" class="p-1.5 hover:bg-slate-700 rounded transition-colors text-slate-300 hover:text-white disabled:opacity-40" id="next-btn">
+          <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Presentation Viewport -->
+  <main class="flex-1 flex items-center justify-center p-4 md:p-8 max-w-7xl w-full mx-auto">
+    
+    <!-- Slide 1: Title -->
+    <div class="slide-content w-full" id="slide-1">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+            Презентация стартап-концепта
+          </div>
+          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            Сервис доставки в кампусе <br>
+            <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">«Эщливери»</span>
+          </h1>
+          <p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed">
+            Разработка и планирование MVP мобильного приложения для доставки товаров до двери комнат в студенческих общежитиях силами студентов-курьеров по методологии Agile (Scrum).
+          </p>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 inline-block">
+            <p class="text-xs text-slate-500 uppercase font-semibold tracking-wider mb-2">Разработчики концепта:</p>
+            <p class="text-slate-300 text-sm font-medium">Команда студенческого проекта ПИД</p>
+          </div>
+        </div>
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-full max-w-sm aspect-square bg-slate-900 rounded-3xl border border-slate-800 p-8 flex flex-col justify-between overflow-hidden group shadow-2xl shadow-indigo-500/10">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-500"></div>
+            <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-pink-600/10 rounded-full blur-3xl group-hover:bg-pink-600/20 transition-all duration-500"></div>
+            
+            <div class="flex justify-between items-start z-10">
+              <span class="text-xs font-mono text-indigo-400 bg-indigo-950/50 px-2.5 py-1 rounded border border-indigo-900">v1.0 (MVP)</span>
+              <i data-lucide="navigation" class="w-8 h-8 text-indigo-400 animate-bounce"></i>
+            </div>
+            
+            <div class="space-y-4 z-10">
+              <div class="space-y-2">
+                <div class="h-1.5 w-1/3 bg-indigo-500 rounded-full"></div>
+                <h3 class="text-2xl font-bold text-white">Быстро. Близко. До двери.</h3>
+              </div>
+              <p class="text-xs text-slate-400">
+                Заказ из аптек, магазинов и кафе прямо в комнату за 20 минут. Подработка для студентов между парами на знакомой территории.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Goals & Objectives -->
+    <div class="slide-content w-full hidden" id="slide-2">
+      <div class="space-y-8">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-2">
+          <h2 class="text-3xl font-extrabold tracking-tight">Цели и задачи проекта</h2>
+          <p class="text-slate-400">Что мы проектируем и какие бизнес-требования закрываем</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-900/30 relative overflow-hidden">
+            <div class="absolute top-4 right-4 w-12 h-12 bg-indigo-500/10 rounded-lg flex items-center justify-center">
+              <i data-lucide="target" class="w-6 h-6 text-indigo-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-indigo-300 mb-4">Глобальная цель</h3>
+            <p class="text-slate-300 leading-relaxed text-base">
+              Разработать и спланировать создание MVP (Minimum Viable Product) мобильного приложения для доставки товаров внутри студенческого кампуса силами студентов-курьеров, используя методологию <strong class="text-indigo-400">Agile (Scrum)</strong>.
+            </p>
+            <p class="text-slate-400 mt-3 text-sm">
+              Проект охватывает полный цикл проектирования: от глубинного анализа аудитории и декомпозиции требований до формирования критериев готовности продукта.
+            </p>
+          </div>
+          
+          <div class="p-6 md:p-8 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="list-todo" class="w-5 h-5 text-indigo-400"></i>
+              Ключевые задачи
+            </h3>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-slate-800 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</span>
+                <span>Провести глубокий анализ целевой аудитории (метод персонажей) для Заказчика и Курьера.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-slate-800 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</span>
+                <span>Сформулировать пользовательские истории (User Stories) и приоритизировать бэклог по методу <strong class="text-white">MoSCoW</strong>.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-slate-800 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</span>
+                <span>Определить критерии готовности задач <strong class="text-white">DoR</strong> (Definition of Ready) и окончания разработки <strong class="text-white">DoD</strong> (Definition of Done).</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-slate-800 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">4</span>
+                <span>Оценить сложность в Story Points, рассчитать Velocity команды и спланировать спринты для выпуска MVP.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Personas -->
+    <div class="slide-content w-full hidden" id="slide-3">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Целевая аудитория (Персонажи)</h2>
+          <p class="text-slate-400">Портреты ключевых пользователей платформы: Заказчик и Курьер</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Persona 1: Customer -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center">
+                  <i data-lucide="user" class="w-8 h-8 text-indigo-400"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white">Максим Зданович</h3>
+                  <p class="text-xs text-indigo-400 font-medium">Заказчик • 19 лет • 2 курс</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 italic">"Хочу заказать и получить у двери за 20 минут, и недорого."</p>
+              
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                  <span class="text-[10px] text-indigo-400 uppercase font-bold tracking-wider block mb-1">Потребности</span>
+                  <p class="text-xs text-slate-300">Доставка еды/лекарств без выхода из корпуса, экономия времени на учебу.</p>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                  <span class="text-[10px] text-pink-400 uppercase font-bold tracking-wider block mb-1">Боли</span>
+                  <p class="text-xs text-slate-300">Внешняя доставка дорогая и только до КПП. Приходится одеваться и идти далеко.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-slate-800/60 flex justify-between items-center text-xs text-slate-500">
+              <span>Контекст: плотное расписание, без машины</span>
+              <span class="text-indigo-400">Бюджет: ограниченный</span>
+            </div>
+          </div>
+
+          <!-- Persona 2: Courier -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center">
+                  <i data-lucide="bike" class="w-8 h-8 text-emerald-400"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white">Леон Завгородний</h3>
+                  <p class="text-xs text-emerald-400 font-medium">Курьер • 20 лет • 3 курс (IT)</p>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 italic font-light">"Беру пару заказов между парами — и уже на кофе заработал."</p>
+              
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                  <span class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider block mb-1">Потребности</span>
+                  <p class="text-xs text-slate-300">Зарабатывать в удобное время рядом с домом, получить опыт в ИТ-команде.</p>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                  <span class="text-[10px] text-amber-400 uppercase font-bold tracking-wider block mb-1">Боли</span>
+                  <p class="text-xs text-slate-300">Жёсткий график и выезды на обычной работе. Нужен прозрачный учёт дохода.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-slate-800/60 flex justify-between items-center text-xs text-slate-500">
+              <span>Контекст: свободные окна между парами</span>
+              <span class="text-emerald-400">Цель: гибкий доход</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: App Interface Mockup (NEW) -->
+    <div class="slide-content w-full hidden" id="slide-4">
+      <div class="space-y-4">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Интерфейс приложения «Эщливери»</h2>
+          <p class="text-slate-400">Проектирование интуитивного UI для студентов и курьеров на базе концепта</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <!-- UI Specifications -->
+          <div class="lg:col-span-4 flex flex-col justify-between space-y-4">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3 flex-1">
+              <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="palette" class="w-4 h-4"></i>
+                Особенности визуального стиля
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Макет разработан в спокойной, природной светло-зелёной гамме, создающей ощущение легкости, экологичности и дружелюбности сервиса.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-400 pt-1">
+                <li class="flex items-start gap-1.5">
+                  <span class="text-emerald-500 font-bold">•</span>
+                  <span><strong>Кампусные локации:</strong> Удобный селектор адресов с точками доставки («Дом», «Первомайская», «Ближнее КПП»).</span>
+                </li>
+                <li class="flex items-start gap-1.5">
+                  <span class="text-emerald-500 font-bold">•</span>
+                  <span><strong>Интеграция сетей:</strong> Доступ к покупкам из Пятёрочки, Магнита и ВкусВилла в 1 клик.</span>
+                </li>
+                <li class="flex items-start gap-1.5">
+                  <span class="text-emerald-500 font-bold">•</span>
+                  <span><strong>Интерактивная корзина:</strong> Мгновенный пересчёт стоимости и быстрое оформление прямо из бокового виджета.</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="p-4 bg-emerald-950/20 border border-emerald-900/30 rounded-xl">
+              <p class="text-[11px] text-emerald-400 font-medium">
+                👉 Попробуйте интерактивный макет справа: добавьте товары в корзину или измените адрес доставки, нажав «Куда доставится?».
+              </p>
+            </div>
+          </div>
+
+          <!-- Live Tailwind UI Replica -->
+          <div class="lg:col-span-8 bg-stone-50 text-stone-800 p-4 md:p-6 rounded-3xl border border-stone-200 shadow-xl overflow-hidden relative flex flex-col justify-between min-h-[460px]">
+            
+            <!-- Alert Popups container (Success notification) -->
+            <div id="checkout-toast" class="absolute top-4 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span>Заказ успешно оформлен! Номер заказа: #ES-9402</span>
+            </div>
+
+            <!-- Top bar / Header of Mockup -->
+            <div class="flex items-center justify-between gap-4 border-b border-stone-200 pb-3 mb-4">
+              <!-- Logo & Brand -->
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                  🟢
+                </div>
+                <span class="font-bold text-stone-900 text-sm hidden sm:inline">Главная</span>
+              </div>
+              
+              <!-- Search Bar -->
+              <div class="flex-1 max-w-md relative">
+                <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" placeholder="Искать еду, рестораны..." class="w-full bg-stone-100 text-xs text-stone-800 pl-9 pr-3 py-2 rounded-full border-none focus:outline-none focus:ring-1 focus:ring-emerald-500" disabled>
+              </div>
+
+              <!-- Address Selector Dropdown button -->
+              <div class="relative">
+                <button onclick="toggleAddressDropdown()" class="flex items-center gap-1 px-3 py-1.5 bg-emerald-100/50 hover:bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium transition-colors border border-emerald-200/40">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                  <span id="active-address-label">Дом</span>
+                  <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                </button>
+
+                <!-- Custom dropdown content replica -->
+                <div id="address-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border border-stone-200 rounded-2xl shadow-xl p-3 z-40 space-y-2">
+                  <div class="text-[10px] uppercase font-bold text-stone-400 tracking-wider px-1">Выберите адрес доставки</div>
+                  
+                  <button onclick="selectAddress('Дом', 'ул. Генерала Лебедя, 12, кв. 9')" class="w-full text-left p-2 hover:bg-stone-50 rounded-xl transition-colors flex items-center justify-between group">
+                    <div>
+                      <span class="text-xs font-semibold text-stone-800 block">🏠 Дом</span>
+                      <span class="text-[10px] text-stone-500">ул. Генерала Лебедя, 12, кв. 9</span>
+                    </div>
+                    <span id="check-Дом" class="text-emerald-600 font-bold text-xs">✓</span>
+                  </button>
+
+                  <button onclick="selectAddress('Первомайская', 'улица 32к4, 224, кв. 32')" class="w-full text-left p-2 hover:bg-stone-50 rounded-xl transition-colors flex items-center justify-between group">
+                    <div>
+                      <span class="text-xs font-semibold text-stone-800 block">🏢 Первомайская</span>
+                      <span class="text-[10px] text-stone-500">улица 32к4, 224, кв. 32</span>
+                    </div>
+                    <span id="check-Первомайская" class="text-emerald-600 font-bold text-xs hidden">✓</span>
+                  </button>
+
+                  <button onclick="selectAddress('Ближнее КПП', 'Широковская улица, д. 11')" class="w-full text-left p-2 hover:bg-stone-50 rounded-xl transition-colors flex items-center justify-between group">
+                    <div>
+                      <span class="text-xs font-semibold text-stone-800 block">🚧 Ближнее КПП</span>
+                      <span class="text-[10px] text-stone-500">Широковская улица, д. 11</span>
+                    </div>
+                    <span id="check-БлижнееКПП" class="text-emerald-600 font-bold text-xs hidden">✓</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Area of Mockup (Dashboard grid) -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 flex-1">
+              
+              <!-- Left Mini Sidebar inside mockup -->
+              <div class="md:col-span-3 space-y-1 hidden md:block border-r border-stone-200/80 pr-3">
+                <div class="flex items-center gap-2 px-3 py-2 bg-emerald-100/50 text-emerald-800 rounded-lg text-xs font-medium">
+                  <i data-lucide="home" class="w-3.5 h-3.5"></i>
+                  <span>Главная</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2 text-stone-500 hover:text-stone-800 text-xs">
+                  <i data-lucide="history" class="w-3.5 h-3.5"></i>
+                  <span>Заказы</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2 text-stone-500 hover:text-stone-800 text-xs">
+                  <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+                  <span>Избранное</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2 text-stone-500 hover:text-stone-800 text-xs">
+                  <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                  <span>Настройки</span>
+                </div>
+              </div>
+
+              <!-- Center Feed: Stores and products inside mockup -->
+              <div class="md:col-span-6 space-y-4">
+                
+                <!-- Stores row -->
+                <div>
+                  <h4 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Магазины</h4>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-white border border-stone-200 p-2.5 rounded-xl text-center shadow-sm">
+                      <span class="text-red-500 font-extrabold text-xs block">⑤ Пятерочка</span>
+                      <span class="text-[9px] text-stone-400">15–25 мин</span>
+                    </div>
+                    <div class="bg-white border border-stone-200 p-2.5 rounded-xl text-center shadow-sm">
+                      <span class="text-red-600 font-extrabold text-xs block">Ⓜ Магнит</span>
+                      <span class="text-[9px] text-stone-400">15–25 min</span>
+                    </div>
+                    <div class="bg-white border border-stone-200 p-2.5 rounded-xl text-center shadow-sm">
+                      <span class="text-emerald-600 font-extrabold text-xs block">🌿 ВкусВилл</span>
+                      <span class="text-[9px] text-stone-400">15–25 мин</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Food section -->
+                <div class="space-y-2">
+                  <h4 class="text-xs font-bold text-stone-500 uppercase tracking-wider">Вы заказывали</h4>
+                  <div class="grid grid-cols-2 gap-3">
+                    <!-- Product 1 -->
+                    <div class="bg-white border border-stone-200 rounded-xl p-2.5 shadow-sm space-y-2 flex flex-col justify-between">
+                      <div class="space-y-1">
+                        <div class="h-16 bg-amber-100 rounded-lg flex items-center justify-center text-2xl" title="Burger">🍔</div>
+                        <h5 class="text-xs font-bold text-stone-800 leading-tight">Бургер Кинг</h5>
+                        <div class="flex justify-between items-center text-[10px] text-stone-500">
+                          <span>⭐ 4.7 (25 мин)</span>
+                          <span class="font-bold text-stone-900">350 ₽</span>
+                        </div>
+                      </div>
+                      <button onclick="addToMockCart('Buff Burger', 350)" class="w-full py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10px] font-medium transition-colors">
+                        + Добавить
+                      </button>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white border border-stone-200 rounded-xl p-2.5 shadow-sm space-y-2 flex flex-col justify-between">
+                      <div class="space-y-1">
+                        <div class="h-16 bg-red-50 rounded-lg flex items-center justify-center text-2xl" title="Sushi">🍣</div>
+                        <h5 class="text-xs font-bold text-stone-800 leading-tight">Суши-Маркет</h5>
+                        <div class="flex justify-between items-center text-[10px] text-stone-500">
+                          <span>⭐ 4.6 (40 мин)</span>
+                          <span class="font-bold text-stone-900">400 ₽</span>
+                        </div>
+                      </div>
+                      <button onclick="addToMockCart('Суши Ролл', 400)" class="w-full py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10px] font-medium transition-colors">
+                        + Добавить
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Right Sidebar: Interactive Cart inside mockup -->
+              <div class="md:col-span-3 bg-white border border-stone-200 p-3 rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-center border-b border-stone-100 pb-2 mb-2">
+                    <span class="text-xs font-bold text-stone-800">Корзина</span>
+                    <span id="cart-count" class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">2</span>
+                  </div>
+                  
+                  <div class="space-y-2" id="cart-items-container">
+                    <!-- Default items in cart -->
+                    <div class="flex justify-between items-center text-[10px] text-stone-600" id="item-BuffBurger">
+                      <span>🍔 Buff Burger</span>
+                      <span class="font-bold text-stone-800">350 ₽</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-stone-600" id="item-Кола">
+                      <span>🥤 Кола</span>
+                      <span class="font-bold text-stone-800">100 ₽</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-2 pt-3 border-t border-stone-100">
+                  <div class="flex justify-between text-xs font-bold text-stone-800">
+                    <span>Итого:</span>
+                    <span id="cart-total">450 ₽</span>
+                  </div>
+                  <button onclick="checkoutMockup()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs font-bold tracking-wide transition-all shadow-md shadow-emerald-500/10">
+                    Оформить
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: User Stories Map (former Slide 4) -->
+    <div class="slide-content w-full hidden" id="slide-5">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Пользовательские истории по этапам</h2>
+          <p class="text-slate-400">Путь пользователя в приложении разделён на 4 ключевых этапа</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-x-auto custom-scrollbar pb-2">
+          <!-- Stage 1 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 min-w-[240px]">
+            <div class="flex items-center gap-2 text-indigo-400 font-bold text-sm border-b border-slate-800 pb-2">
+              <i data-lucide="door-open" class="w-4 h-4"></i>
+              <span>Этап 1. Онбординг</span>
+            </div>
+            <div class="space-y-2">
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-1">US1 • 3 SP</span>
+                Регистрация по студ. почте с указанием корпуса/комнаты.
+              </div>
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-1">US2 • 2 SP</span>
+                Вход в аккаунт с сохранением истории и адреса.
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 min-w-[240px]">
+            <div class="flex items-center gap-2 text-indigo-400 font-bold text-sm border-b border-slate-800 pb-2">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              <span>Этап 2. Заказ</span>
+            </div>
+            <div class="space-y-2">
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US3 • 5 SP</span> Каталог товаров с ценами.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-0.5">US4 • 3 SP</span> Поиск по названию.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US5 • 3 SP</span> Корзина с регулировкой штук.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US6 • 5 SP</span> Оформление до конкретной двери.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US7a • 5 SP</span> Оплата картой онлайн.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US7b • 3 SP</span> Оплата наличными/картой курьеру.
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 min-w-[240px]">
+            <div class="flex items-center gap-2 text-indigo-400 font-bold text-sm border-b border-slate-800 pb-2">
+              <i data-lucide="truck" class="w-4 h-4"></i>
+              <span>Этап 3. Доставка</span>
+            </div>
+            <div class="space-y-2">
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-0.5">US8 • 8 SP</span> Трекинг курьера на карте.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-0.5">US9 • 3 SP</span> Push-уведомления о статусе.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US11 • 5 SP</span> Регистрация курьера + проверка.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US12a • 5 SP</span> Список доступных заказов курьеру.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-indigo-400 font-bold block mb-0.5">US12b • 3 SP</span> Принять/отменить заказ курьером.
+              </div>
+              <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-0.5">US13 • 5 SP</span> Адрес комнаты и маршрут курьера.
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 4 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 min-w-[240px]">
+            <div class="flex items-center gap-2 text-indigo-400 font-bold text-sm border-b border-slate-800 pb-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>Этап 4. Завершение</span>
+            </div>
+            <div class="space-y-2">
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-1">US10 • 2 SP</span>
+                Оценка доставки и курьера.
+              </div>
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-1">US14 • 5 SP</span>
+                История заработка и выплаты курьеру.
+              </div>
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs">
+                <span class="text-[10px] text-slate-500 font-bold block mb-1">US15 • 3 SP</span>
+                Чат/обращение в поддержку при проблеме.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center text-xs text-slate-500">
+          <span class="text-indigo-400 font-semibold">Фиолетовые карточки</span> входят в MVP. <span class="text-slate-500 font-semibold">Серые карточки</span> отложены на следующие релизы.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: MoSCoW Prioritization (former Slide 5) -->
+    <div class="slide-content w-full hidden" id="slide-6">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Приоритезация требований: Метод MoSCoW</h2>
+          <p class="text-slate-400">Граница MVP проекта: какие фичи критичны, а какие могут подождать</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- MUST HAVE -->
+          <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-4 space-y-3">
+            <div class="flex items-center gap-2 text-indigo-400 font-extrabold text-sm uppercase">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+              Must Have (MVP)
+            </div>
+            <div class="space-y-1.5 text-xs text-slate-300">
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US1: Рег. студента (3 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US2: Вход в аккаунт (2 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US3: Каталог с ценами (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US5: Корзина товаров (3 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US6: Заказ до двери (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US7a: Онлайн-оплата (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US7b: Оплата при получ. (3 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US11: Рег. курьера (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US12a: Сп. заказов (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US12b: Принять/Отмена (3 SP)</div>
+            </div>
+          </div>
+
+          <!-- SHOULD HAVE -->
+          <div class="bg-blue-950/20 border border-blue-500/30 rounded-xl p-4 space-y-3">
+            <div class="flex items-center gap-2 text-blue-400 font-extrabold text-sm uppercase">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+              Should Have (v1.1)
+            </div>
+            <div class="space-y-1.5 text-xs text-slate-300">
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US4: Поиск по каталогу (3 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US8: Трекинг заказа (8 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US9: Push-уведомления (3 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US13: Навигация курьера (5 SP)</div>
+            </div>
+          </div>
+
+          <!-- COULD HAVE -->
+          <div class="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-4 space-y-3">
+            <div class="flex items-center gap-2 text-emerald-400 font-extrabold text-sm uppercase">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              Could Have (v1.2)
+            </div>
+            <div class="space-y-1.5 text-xs text-slate-300">
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US10: Оценка доставки (2 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US14: История заработка (5 SP)</div>
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US15: Чат поддержки (3 SP)</div>
+            </div>
+          </div>
+
+          <!-- WON'T HAVE -->
+          <div class="bg-rose-950/20 border border-rose-500/30 rounded-xl p-4 space-y-3">
+            <div class="flex items-center gap-2 text-rose-400 font-extrabold text-sm uppercase">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+              Won't Have (Позже)
+            </div>
+            <div class="space-y-1.5 text-xs text-slate-300">
+              <div class="p-2 bg-slate-900/60 rounded border border-slate-850">US16: Админ-модерация курьеров и товаров (8 SP)</div>
+              <p class="text-[11px] text-slate-400 pt-1 italic">Вынесено из MVP: на пилоте в одном корпусе достаточно ручного администрирования БД.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: MVP Concept (former Slide 6) -->
+    <div class="slide-content w-full hidden" id="slide-7">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Минимально жизнеспособный продукт (MVP)</h2>
+          <p class="text-slate-400">Границы первого релиза и бизнес-обоснование</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7 space-y-4">
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+              <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+                <i data-lucide="check-square" class="w-5 h-5"></i>
+                Что войдет в пилотный релиз?
+              </h3>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                В первый релиз вошли ровно <strong class="text-white">10 историй (Must Have) суммарной сложностью 39 SP</strong>. Это критически необходимый минимум, позволяющий проверить главную продуктовую гипотезу:
+              </p>
+              <div class="grid grid-cols-2 gap-3 text-xs text-slate-400 pt-2">
+                <div class="bg-slate-950 p-2.5 rounded border border-slate-800/80 flex items-start gap-2">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  Студент может авторизоваться, наполнить корзину и оформить заказ до своей двери.
+                </div>
+                <div class="bg-slate-950 p-2.5 rounded border border-slate-800/80 flex items-start gap-2">
+                  <span class="text-indigo-400 font-bold">✓</span>
+                  Курьер может пройти верификацию, взять заказ из общего пула и доставить его.
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-indigo-950/10 border border-indigo-900/30">
+              <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Бизнес-обоснование</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Без любой из выбранных 10 историй сквозной бизнес-процесс (заказ → оплата → назначение курьера → доставка) физически ломается. Инструменты вроде онлайн-трекинга курьера (US8) или авто-пушей (US9) повышают удобство, но не влияют на проверку базовой востребованности сервиса. На пилотном этапе мы снижаем риски, экономя время команды разработчиков.
+              </p>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="bg-gradient-to-tr from-indigo-900/20 to-slate-900 border border-indigo-900/30 rounded-2xl p-6 text-center space-y-4">
+              <div class="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400">
+                <i data-lucide="rocket" class="w-8 h-8"></i>
+              </div>
+              <div>
+                <span class="text-4xl font-extrabold text-white">39 SP</span>
+                <p class="text-xs text-indigo-400 font-bold uppercase tracking-wider mt-1">Трудоемкость MVP</p>
+              </div>
+              <div class="border-t border-slate-800 pt-4 space-y-2 text-left">
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-400">Спринтов на реализацию:</span>
+                  <span class="text-white font-bold">3 спринта</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-400">Календарное время:</span>
+                  <span class="text-white font-bold">6 недель</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-400">Территория пилота:</span>
+                  <span class="text-emerald-400 font-bold">1 жилой корпус</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: DoR & DoD Definitions (former Slide 7) -->
+    <div class="slide-content w-full hidden" id="slide-8">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Definition of Ready & Done</h2>
+          <p class="text-slate-400">Стандарты качества разработки и защита от хаоса в студенческой команде</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- DoR Card -->
+          <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 relative">
+            <span class="absolute top-4 right-4 text-xs font-mono text-indigo-400 bg-indigo-950 px-2.5 py-1 rounded border border-indigo-900">DoR</span>
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="file-check-2" class="w-5 h-5 text-indigo-400"></i>
+              Definition of Ready
+            </h3>
+            <p class="text-xs text-slate-400">
+              Чек-лист готовности задачи к взятию в спринт. Защищает разработчиков от размытых требований.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Формат:</strong> История по шаблону: «Как... я хочу... чтобы...», ценность ясна.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Критерии:</strong> Наличие Acceptance Criteria (AC) по методу Given-When-Then.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Оценка:</strong> Оценена в Story Points и помещается в спринт (&le; 7.5 SP).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Ясность:</strong> Команда подтвердила понимание, вопросов и блокировок нет.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- DoD Card -->
+          <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4 relative">
+            <span class="absolute top-4 right-4 text-xs font-mono text-indigo-400 bg-indigo-950 px-2.5 py-1 rounded border border-indigo-900">DoD</span>
+            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-5 h-5 text-indigo-400"></i>
+              Definition of Done
+            </h3>
+            <p class="text-xs text-slate-400">
+              Чек-лист завершенности задачи. Защищает продукт от выкатки неработающего кода.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Код:</strong> Смержен в основную ветку через Pull Request в репозиторий.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Ревью:</strong> Пройдено код-ревью как минимум одним вторым разработчиком.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Тесты:</strong> Покрыт юнит-тестами валидации, сборка успешна (CI).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Приемка:</strong> Все сценарии Given-When-Then успешно пройдены при демо.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-indigo-400 font-bold">•</span>
+                <span><strong>Релиз:</strong> Развёрнуто на пилотном стенде, README документация обновлена.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-4 bg-indigo-950/20 border border-indigo-900/30 rounded-xl text-xs text-slate-300">
+          <strong class="text-white">Обоснование выбора критериев:</strong> Поскольку студенческая команда работает part-time урывками между парами, строгий входной барьер (DoR) уберегает от траты дефицитного времени на «сырые» истории. Наличие обязательного деплоя на пилотный стенд (DoD) гарантирует, что готовый функционал действительно работает у реальных студентов.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: DoR & DoD in Action (former Slide 8) -->
+    <div class="slide-content w-full hidden" id="slide-9">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">DoR и DoD в действии (Примеры)</h2>
+          <p class="text-slate-400">Конкретные примеры валидации критериев для историй бэклога</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- DoR Case -->
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <span class="text-xs text-indigo-400 font-bold uppercase tracking-wider">Применение DoR к задаче</span>
+              <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">US6 • 5 SP</span>
+            </div>
+            <h4 class="text-sm font-bold text-white">Тема: Оформление заказа до двери</h4>
+            
+            <div class="space-y-2 text-xs">
+              <p class="text-slate-300"><span class="text-indigo-400">✓</span> <strong>Шаблон:</strong> «Как заказчик, я хочу оформить заказ с указанием корпуса и комнаты, чтобы курьер доставил точно к двери».</p>
+              
+              <div class="bg-slate-950 p-3 rounded border border-slate-850 space-y-1 text-[11px] font-mono">
+                <p class="text-indigo-400">// Критерий приемки (AC):</p>
+                <p><span class="text-slate-500">GIVEN:</span> В корзине есть товар, пользователь авторизован.</p>
+                <p><span class="text-slate-500">WHEN:</span> Выбирает корпус и комнату, жмет «Оформить».</p>
+                <p><span class="text-slate-500">THEN:</span> Создается заказ «Ожидает курьера», адрес сохранен.</p>
+              </div>
+              <p class="text-slate-400 text-[11px]">Оценка (5 SP) &le; 7.5 SP. Технических вопросов и зависимостей у разработчиков нет. Задача готова к разработке.</p>
+            </div>
+          </div>
+
+          <!-- DoD Case -->
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <span class="text-xs text-emerald-400 font-bold uppercase tracking-wider">Применение DoD к задаче</span>
+              <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">US1 • 3 SP</span>
+            </div>
+            <h4 class="text-sm font-bold text-white">Тема: Регистрация по студенческой почте</h4>
+            
+            <div class="space-y-2 text-xs">
+              <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+                <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                  <span class="text-emerald-400 font-bold">✓</span> <strong>PR & Code Review:</strong> Ветка смержена в main, ревью пройдено вторым разработчиком.
+                </div>
+                <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                  <span class="text-emerald-400 font-bold">✓</span> <strong>Тесты & CI:</strong> Юнит-тесты валидации доменов почты зелёные, сборка успешна.
+                </div>
+                <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                  <span class="text-emerald-400 font-bold">✓</span> <strong>Критерии AC:</strong> Код подтверждения отправляется, невалидная почта выдает ошибку.
+                </div>
+                <div class="p-2 bg-slate-950 rounded border border-emerald-950/40">
+                  <span class="text-emerald-400 font-bold">✓</span> <strong>Деплой:</strong> Версия крутится на пилотном стенде, README по API обновлен.
+                </div>
+              </div>
+              <p class="text-emerald-400 font-bold text-[11px] pt-1">Вывод: Задача завершена на 100%.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: INVEST & Team (former Slide 9) -->
+    <div class="slide-content w-full hidden" id="slide-10">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Анализ INVEST и Состав команды</h2>
+          <p class="text-slate-400">Критерии качества историй и структура ролей в Scrum-команде</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- INVEST analysis -->
+          <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-indigo-400"></i>
+              Критерии INVEST для наших историй
+            </h3>
+            
+            <div class="grid grid-cols-3 gap-2 text-[10px] text-slate-300">
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">I - Independent</strong>
+                История независима. Позволяет реализовывать их в любом порядке.
+              </div>
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">N - Negotiable</strong>
+                Обсуждаемая. Суть — отправная точка, детали допиливаются вместе.
+              </div>
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">V - Valuable</strong>
+                Ценная. Приносит очевидную пользу студенту или бизнесу.
+              </div>
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">E - Estimable</strong>
+                Оцениваемая. Трудоёмкость понятна разработчикам в SP.
+              </div>
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">S - Small</strong>
+                Небольшая. Реализация свободно укладывается в рамки спринта.
+              </div>
+              <div class="p-2 bg-slate-950 rounded border border-slate-850">
+                <strong class="text-indigo-400 block mb-0.5">T - Testable</strong>
+                Тестируемая. Присутствуют чёткие чек-листы проверки (AC).
+              </div>
+            </div>
+
+            <div class="p-3 bg-indigo-950/20 border border-indigo-900/30 rounded-lg text-xs">
+              <strong class="text-white">Пример декомпозиции:</strong> Изначально общая история оплаты (US7) нарушала критерий <strong class="text-indigo-400">S (Small)</strong>. Мы декомпозировали её на <strong class="text-white">US7a</strong> (картой онлайн — 5 SP) и <strong class="text-white">US7b</strong> (курьеру — 3 SP), сделав задачи легко оцениваемыми. Аналогично поступили с разделением <strong class="text-white">US12</strong>. А вот <strong class="text-white">US8</strong> (трекинг на карте) нарушает <strong class="text-indigo-400">I</strong> и <strong class="text-indigo-400">S</strong>, поэтому убрана из MVP.
+            </div>
+          </div>
+
+          <!-- Team and roles -->
+          <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="users" class="w-5 h-5 text-indigo-400"></i>
+              Состав нашей команды (5 человек)
+            </h3>
+            
+            <div class="space-y-2.5 text-xs text-slate-300">
+              <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                <div>
+                  <span class="font-bold text-white block">1. Product Owner / Аналитик</span>
+                  <span class="text-[10px] text-slate-400">Управление бэклогом, приоритизация, связь с вузом</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 text-indigo-400 px-2 py-0.5 rounded uppercase font-bold">PO</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                <div>
+                  <span class="font-bold text-white block">2. Scrum Master / Fullstack dev</span>
+                  <span class="text-[10px] text-slate-400">Scrum-процессы, устранение преград, разработка</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 text-indigo-400 px-2 py-0.5 rounded uppercase font-bold">SM/DEV</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                <div>
+                  <span class="font-bold text-white block">3. Backend-разработчик</span>
+                  <span class="text-[10px] text-slate-400">Серверная часть, REST API, база данных, транзакции</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 text-indigo-400 px-2 py-0.5 rounded uppercase font-bold">BACKEND</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                <div>
+                  <span class="font-bold text-white block">4. Frontend-разработчик</span>
+                  <span class="text-[10px] text-slate-400">Мобильный интерфейс, интеграция API, верстка</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 text-indigo-400 px-2 py-0.5 rounded uppercase font-bold">FRONTEND</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-850">
+                <div>
+                  <span class="font-bold text-white block">5. QA-инженер + DevOps</span>
+                  <span class="text-[10px] text-slate-400">Тестирование, автосборки, CI/CD, релиз-менеджмент</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 text-indigo-400 px-2 py-0.5 rounded uppercase font-bold">QA/OPS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Velocity & Sprint Planning (former Slide 10) -->
+    <div class="slide-content w-full hidden" id="slide-11">
+      <div class="space-y-6">
+        <div class="border-l-4 border-indigo-500 pl-4 space-y-1">
+          <h2 class="text-3xl font-extrabold tracking-tight">Скорость команды и Расчет спринтов</h2>
+          <p class="text-slate-400">Реалистичное планирование поставок MVP и полной версии продукта</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Velocity -->
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div class="space-y-2">
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="gauge" class="w-5 h-5 text-indigo-400"></i>
+                Velocity команды
+              </h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Наши ресурсы ограничены: команда из 5 студентов работает part-time урывками (~2-3 часа в день). Код фактически пишут 3 разработчика.
+              </p>
+              <p class="text-xs text-slate-400">
+                За эталон взят таск авторизации (US2) = 2 SP. 
+              </p>
+            </div>
+            
+            <div class="p-3 bg-slate-950 rounded-lg border border-slate-800/80 text-center">
+              <span class="text-2xl font-black text-indigo-400">15 Story Points</span>
+              <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mt-0.5">Скорость за 1 спринт (2 недели)</p>
+            </div>
+          </div>
+
+          <!-- MVP calculation -->
+          <div class="p-5 rounded-xl bg-indigo-950/20 border border-indigo-500/20 space-y-3 flex flex-col justify-between">
+            <div class="space-y-2">
+              <h3 class="text-base font-bold text-indigo-400 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                Спринты на MVP
+              </h3>
+              <p class="text-xs text-slate-300">
+                Суммарная сложность 10 историй из категории Must Have составляет:
+              </p>
+              <p class="text-xs font-mono text-indigo-300">
+                3(US1) + 2(US2) + 5(US3) + 3(US5) + 5(US6) + 5(US7a) + 3(US7b) + 5(US11) + 5(US12a) + 3(US12b) = 39 SP.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-2 border-t border-slate-850">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Формула:</span>
+                <span class="font-mono text-slate-300">39 SP / 15 velocity = 2.6</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-white">
+                <span>Итого спринтов:</span>
+                <span class="text-indigo-400">3 спринта (округл.)</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-emerald-400">
+                <span>Время до релиза:</span>
+                <span>6 недель</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full version calculation -->
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div class="space-y-2">
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i>
+                Полная версия
+              </h3>
+              <p class="text-xs text-slate-400">
+                Включает категории Must, Should и Could (без Won't Have). Суммарная сложность составляет:
+              </p>
+              <p class="text-xs font-mono text-slate-400">
+                39 (MVP) + 19 (Should) + 10 (Could) = 68 SP.
+              </p>
+            </div>
+            
+            <div class="space-y-2 pt-2 border-t border-slate-800">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Формула:</span>
+                <span class="font-mono text-slate-500">68 SP / 15 velocity = 4.53</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-white">
+                <span>Итого спринтов:</span>
+                <span class="text-indigo-400">5 спринтов (округл.)</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold text-indigo-400">
+                <span>Время разработки:</span>
+                <span>10 недель</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Bottom alert -->
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-850 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 text-slate-400">
+            <i data-lucide="info" class="w-4 h-4 text-indigo-400"></i>
+            <span>Каждый спринт длится фиксированные <strong>2 недели</strong>, включая в себя планирование, ретроспективу и демо владельцу продукта.</span>
+          </div>
+          <span class="text-emerald-400 font-bold hidden md:inline">Уверенность в релизе: Высокая</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Navigation / Footer Slide Dots -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-4 px-6 flex flex-col sm:flex-row gap-3 justify-between items-center text-xs text-slate-500">
+    <div>
+      <span>Разработка MVP «Эщливери» • Проектно-исследовательская деятельность</span>
+    </div>
+    
+    <!-- Dots navigation -->
+    <div class="flex gap-1.5" id="slide-dots-container">
+      <!-- Generated by JS -->
+    </div>
+    
+    <div>
+      <span class="font-mono text-slate-600">Используйте стрелочки для навигации</span>
+    </div>
+  </footer>
+
+  <!-- App logic & initialization -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 11; // Updated to 11 to support the new UI slide
+
+    // Mockup Interactive Data State
+    const mockCart = [
+      { id: 'BuffBurger', name: 'Buff Burger', price: 350 },
+      { id: 'Кола', name: 'Кола', price: 100 }
+    ];
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Create Navigation Dots
+    const dotsContainer = document.getElementById('slide-dots-container');
+    for (let i = 1; i <= totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 1 ? 'bg-indigo-500 w-6' : 'bg-slate-700 hover:bg-slate-600'}`;
+      dot.id = `dot-${i}`;
+      dot.setAttribute('onclick', `goToSlide(${i})`);
+      dot.setAttribute('title', `Слайд ${i}`);
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateNavState() {
+      // Update Slide number indicators
+      document.getElementById('current-slide-num').innerText = currentSlide;
+      document.getElementById('total-slides-num').innerText = totalSlides;
+
+      // Update button disabled states
+      document.getElementById('prev-btn').disabled = currentSlide === 1;
+      document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+
+      // Update Dot visual active states
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (dot) {
+          if (i === currentSlide) {
+            dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-indigo-500 w-6';
+          } else {
+            dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-slate-700 hover:bg-slate-600';
+          }
+        }
+      }
+    }
+
+    function goToSlide(slideNum) {
+      if (slideNum < 1 || slideNum > totalSlides) return;
+      
+      // Hide current slide
+      document.getElementById(`slide-${currentSlide}`).classList.add('hidden');
+      
+      // Show new slide
+      document.getElementById(`slide-${slideNum}`).classList.remove('hidden');
+      
+      currentSlide = slideNum;
+      updateNavState();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        goToSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    // Interactive Address Dropdown toggle
+    function toggleAddressDropdown() {
+      const dropdown = document.getElementById('address-dropdown');
+      dropdown.classList.toggle('hidden');
+    }
+
+    // Select Active delivery Address
+    function selectAddress(label, addressText) {
+      document.getElementById('active-address-label').innerText = label;
+      
+      // Hide all checkboxes
+      document.getElementById('check-Дом').classList.add('hidden');
+      document.getElementById('check-Первомайская').classList.add('hidden');
+      document.getElementById('check-БлижнееКПП').classList.add('hidden');
+      
+      // Show chosen checkbox
+      const activeId = 'check-' + label.replace(' ', '');
+      document.getElementById(activeId).classList.remove('hidden');
+      
+      // Close dropdown
+      toggleAddressDropdown();
+    }
+
+    // Add item to Interactive Mockup Cart
+    function addToMockCart(itemName, price) {
+      const itemId = itemName.replace(' ', '');
+      
+      // Check if item already exists in mock cart
+      const existing = mockCart.find(item => item.id === itemId);
+      if (existing) {
+        // Simple mock behavior: just keep one but notify or show again
+        return;
+      }
+
+      mockCart.push({ id: itemId, name: itemName, price: price });
+      renderMockCart();
+    }
+
+    // Render mockup cart HTML based on current state
+    function renderMockCart() {
+      const container = document.getElementById('cart-items-container');
+      container.innerHTML = '';
+      
+      let total = 0;
+      mockCart.forEach(item => {
+        total += item.price;
+        container.innerHTML += `
+          <div class="flex justify-between items-center text-[10px] text-stone-600 animate-fade-in" id="item-${item.id}">
+            <span class="flex items-center gap-1">
+              <button onclick="removeFromMockCart('${item.id}')" class="text-red-400 hover:text-red-600 font-bold px-1 font-sans">×</button>
+              ${item.id === 'BuffBurger' || item.id === 'Buff Burger' ? '🍔' : item.id === 'СушиРолл' ? '🍣' : '🥤'} ${item.name}
+            </span>
+            <span class="font-bold text-stone-800">${item.price} ₽</span>
+          </div>
+        `;
+      });
+
+      document.getElementById('cart-count').innerText = mockCart.length;
+      document.getElementById('cart-total').innerText = total + ' ₽';
+    }
+
+    // Remove item from Mockup Cart
+    function removeFromMockCart(itemId) {
+      const idx = mockCart.findIndex(item => item.id === itemId);
+      if (idx > -1) {
+        mockCart.splice(idx, 1);
+      }
+      renderMockCart();
+    }
+
+    // Complete mock checkout process with soft UI toast
+    function checkoutMockup() {
+      const toast = document.getElementById('checkout-toast');
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      
+      // Clear cart on checkout
+      mockCart.length = 0;
+      renderMockCart();
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 4000);
+    }
+
+    // Keyboard controls support
+    document.addEventListener('keydown', function(event) {
+      // Exclude key navigation when dropdown is open and someone is using keys (optional)
+      if (event.key === 'ArrowRight' || event.key === ' ') {
+        nextSlide();
+        event.preventDefault();
+      } else if (event.key === 'ArrowLeft') {
+        prevSlide();
+        event.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
