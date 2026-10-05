@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Ghostech';
+    src: url('Ghostech-Regular.eot');
+    src: local('Ghostech Regular'), local('Ghostech-Regular'),
+        url('Ghostech-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Ghostech-Regular.woff2') format('woff2'),
+        url('Ghostech-Regular.woff') format('woff'),
+        url('Ghostech-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

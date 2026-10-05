@@ -1,0 +1,129 @@
+@font-face {
+    font-family: 'Chaos16';
+    src: url('./../CHAOS16/CHAOS16.otf') format('truetype');
+}
+@font-face {
+    font-family: 'Ghostech';
+    src: url('font/Ghostech-Regular.eot');
+    src: local('Ghostech Regular'), local('Ghostech-Regular'),
+        url('font/Ghostech-Regular.eot?#iefix') format('embedded-opentype'),
+        url('font/Ghostech-Regular.woff2') format('woff2'),
+        url('font/Ghostech-Regular.woff') format('woff'),
+        url('font/Ghostech-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+:root {
+    --hinting-blue: #CFD7DD;
+    --transformer: #A5AEB7;
+    --silver-filigree: #7c7c81;
+    --silver-filigree-transparent: rgba(124, 124, 129, 0.4);
+    --chinotto: #554846;
+    --crisp-cristmas-cranberries: #a5080a;
+    --sacramental-red: #610b0d;
+    --italian-roast: #27110e;
+    --alabaster-grey: #E1E6E1;
+    --alabaster-grey-transparent: rgba(225, 230, 225, 0.4);
+    --test: rgba(29, 29, 29, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--italian-roast);
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-family: Ghostech; */
+    font-family: Chaos16;
+}
+
+.middle-part {
+    width: 800px;
+    background-color: var(--test);
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px
+}
+
+header {
+    width: 800px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--silver-filigree);
+    font-size: 2em;
+    margin: 0 20px;
+}
+
+main {
+    width: calc(800px - 40px);
+    min-height: calc(100vh - 200px);
+    padding: 0 20px;
+    font-size: 2em;
+    color: var(--hinting-blue);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.sep {
+    width: 760px;
+    height: 4px;
+    background-color: var(--silver-filigree);
+    border-radius: 2px;
+}
+
+b {
+    color: var(--crisp-cristmas-cranberries);
+}
+
+thinking {
+    text-decoration: none;
+    color: #27110e;
+}
+
+.year {
+    
+}
+
+.month {
+    margin: 20px;
+    padding: 10px;
+    background-color: var(--alabaster-grey-transparent);
+
+}
+div.day {
+    margin-left: 20px;
+    padding: 10px;
+    
+    background-color: var(--test);
+}
+
+a.day {
+    text-decoration: none;
+    color: var(--alabaster-grey);
+}
