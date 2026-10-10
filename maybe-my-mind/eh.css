@@ -127,3 +127,13 @@ a.day {
     text-decoration: none;
     color: var(--alabaster-grey);
 }
+
+update {
+    color: var(--crisp-cristmas-cranberries);
+    font-size: 0.5em;
+}
+thinktrans {
+    color: transparent;
+    user-select: none; 
+    -webkit-user-select: none;
+}
