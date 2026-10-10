@@ -104,6 +104,8 @@ b {
 thinking {
     text-decoration: none;
     color: #27110e;
+    user-select: none; 
+    -webkit-user-select: none;
 }
 
 .year {
