@@ -139,3 +139,18 @@ thinktrans {
     user-select: none; 
     -webkit-user-select: none;
 }
+.gallery {
+    column-count: 3;
+    column-gap: 10px;
+}
+.gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+    break-inside: avoid;
+    border-radius: 6px;
+}
+@media (max-width: 700px) {
+    .gallery { column-count: 2; }
+}
