@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - My cringy mind</title>
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/maybe-my-mind/eh.css">
+    <style>
+        .error-code {
+            font-size: clamp(64px, 22vw, 180px);
+            line-height: 1;
+            margin: 0;
+        }
+    </style>
+</head>
+<body id="body">
+    <div class="middle-part">
+        <header>
+            <nav>
+                <div class="link"><a href="/maybe-my-mind/home.html" class="nav-link">home</a></div>
+                <div class="link"><a href="/maybe-my-mind/articles.html" class="nav-link">articles</a></div>
+                <div class="link"><a href="/maybe-my-mind/diary.html" class="nav-link">diary</a></div>
+            </nav>
+        </header>
+        <div class="sep"></div>
+        <main>
+            <p class="error-code"><b>404</b></p>
+            <br>
+            <h2>nothing here</h2>
+            <br>
+            <p>this page doesnt exist, or maybe it was deleted, or maybe i just made a typo in the link))</p>
+            <p>its dark and foggy here, better go back.</p>
+            <br>
+            <p><a href="/maybe-my-mind/home.html" class="nav-link">back to home</a></p>
+        </main>
+    </div>
+    <script src="/maybe-my-mind/js/three.r134.min.js"></script>
+    <script src="/maybe-my-mind/js/vanta.fog.min.js"></script>
+    <script>
+    VANTA.FOG({
+    el: "#body",
+    mouseControls: false,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200.00,
+    minWidth: 200.00,
+    highlightColor: 0xc31111,
+    midtoneColor: 0x0,
+    lowlightColor: 0xff0000,
+    baseColor: 0x0,
+    blurFactor: 0.59,
+    speed: 1.20,
+    zoom: 1.40
+    })
+</script>
+</body>
+</html>
